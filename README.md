@@ -1,2 +1,2 @@
 # lem_in
-School project called Lem_in
+School project called Lem-in
