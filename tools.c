@@ -6,18 +6,17 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:29:37 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/07 15:43:46 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/07 20:32:50 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-#include <stdio.h>
 
 /*
 ** Adds a new name-node to the beginning of the linked list.
 */
 
-void	names_add(t_names **alst, t_names *new)
+void	names_add(t_room **alst, t_room *new)
 {
 	if (new)
 	{
@@ -35,7 +34,7 @@ void	names_add(t_names **alst, t_names *new)
 ** Counts the amount of nodes in a linked list.
 */
 
-int     count_links(t_names *links)
+int     count_links(t_room *links)
 {
     int i;
 
@@ -76,22 +75,35 @@ char	*strcpy_space(char *str)
 }
 
 /*
-** Allocates a new node in memory and copies the name and the "start-end(se)" -number to the node.
+** Allocates a new node in memory and copies the name and 
+** the "start-end(se)" -number to the node. Also saves the
+** X- and Y-coordinates needed for the visualizer.
 */
 
-t_names	*new_name_node(char *content, int se)
+t_room	*new_name_node(char *content, int se)
 {
-	t_names	*new;
+	t_room	*new;
+	int		i;
+	char	*tmp;
 
-	new = (t_names*)malloc(sizeof(t_names));
+	i = 0;
+	new = (t_room*)malloc(sizeof(t_room));
 	if (!new)
 		return (NULL);
-	new->name = new->name = strcpy_space(content);
-    new->se = se;
+	new->name = strcpy_space(content);
+	tmp = ft_strchr(content, ' ');
+	new->x = ft_atoi(tmp + 1);
+	new->y = ft_atoi(ft_strchr((tmp + 1), ' '));
+	new->se = se;
+	new->lvl = -1;
 	new->next = NULL;
 	return (new);
 }
 
+/*
+** This function finds the room name the current room is connected to
+** and returns the pointer to that name.
+*/
 
 char    *strstr_links(char *needle, char *haystack)
 {
