@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: orantane <oskari.rantanen@student.hive.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:33:49 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/07 20:29:45 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/08 16:01:05 by orantane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@ typedef struct		s_names
 typedef struct		s_lem
 {
 	int				ants;
+	int				link_num;
+	struct t_names	*que;
+	struct t_names	*read;
 	t_list			*links;
 	char			*start;
 	char			*end;

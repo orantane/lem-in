@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: orantane <oskari.rantanen@student.hive.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 16:58:32 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/07 20:31:14 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/08 16:01:04 by orantane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,16 @@
 ** The function allocates memory for the link array and sets the links[i] to
 ** point to the rooms found in the t_names *links.
 */
-void    build_links_to_room(t_room *cur, t_room *rooms, t_names *links, int num)
+t_room	*build_links_to_room(t_room *cur, t_room *rooms, t_names *links, t_lem *lem)
 {
     t_names	*tmp;
 	int		i;
 	t_names	*new;
 
-	if (!(cur->links = (t_room**)malloc(sizeof(t_room*) * (num + 1))))
+	if (!(cur->links = (t_room**)malloc(sizeof(t_room*) * (lem->link_num + 1))))
 		return (NULL); //MALLOC ERROR
 	i = 0;
-    while (rooms && i < num)
+    while (rooms && i < lem->link_num)
     {
 		tmp = links;
 		while (tmp)
@@ -35,6 +35,7 @@ void    build_links_to_room(t_room *cur, t_room *rooms, t_names *links, int num)
 			if (tmp->room == rooms)
 			{
 				cur->links[i] = rooms;
+				lem->que = build_queue(cur, rooms, links, lem);
 				i++;
 			}
 			tmp = tmp->next;
@@ -42,6 +43,7 @@ void    build_links_to_room(t_room *cur, t_room *rooms, t_names *links, int num)
 		rooms = rooms->next;
 	}
 	cur->links[i] = NULL;
+	return (lem->que);
 }
 
 /*
@@ -93,17 +95,17 @@ t_names     *find_links_to_room(char *r_name, t_list *list, t_room *rooms)
 ** Maybe the *links could be our queue where we read from.
 */
 
-void	build_link_tree(t_room *start, t_room *rooms, t_list *list)
+void	build_link_tree(t_room *start, t_room *rooms, t_list *list, t_lem *lem)
 {
 	t_names *links;
-	int		links_num;
 	int		i;
-	t_names	*read;
-	t_names	*que;
 								//start huone
+	lem->read = NULL;
+	lem->que = NULL;
 	links = find_links_to_room(start->name, list, rooms);
-	links_num = count_links(links);
-	build_links_to_room(start, rooms, links, links_num);
+	lem->link_num = count_links(links);
+	lem->read = build_links_to_room(start, rooms, links, lem);
+	lem->que = NULL;
 	//looppi
 
 	//2 linked lists: Queue Visited
