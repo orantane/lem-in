@@ -3,133 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: orantane <oskari.rantanen@student.hive.    +#+  +:+       +#+        */
+/*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 16:58:32 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/08 16:01:04 by orantane         ###   ########.fr       */
+/*   Updated: 2020/10/08 18:19:26 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-
-/*
-** Function takes the room we want to add links to, the list of all the rooms
-** (*rooms) the t_names list of rooms to be linked, and the number of links.
-** The function allocates memory for the link array and sets the links[i] to
-** point to the rooms found in the t_names *links.
-*/
-t_room	*build_links_to_room(t_room *cur, t_room *rooms, t_names *links, t_lem *lem)
-{
-    t_names	*tmp;
-	int		i;
-	t_names	*new;
-
-	if (!(cur->links = (t_room**)malloc(sizeof(t_room*) * (lem->link_num + 1))))
-		return (NULL); //MALLOC ERROR
-	i = 0;
-    while (rooms && i < lem->link_num)
-    {
-		tmp = links;
-		while (tmp)
-		{
-			if (tmp->room == rooms)
-			{
-				cur->links[i] = rooms;
-				lem->que = build_queue(cur, rooms, links, lem);
-				i++;
-			}
-			tmp = tmp->next;
-		}
-		rooms = rooms->next;
-	}
-	cur->links[i] = NULL;
-	return (lem->que);
-}
-
-/*
-** Function takes the name of the room whose links we want to find (r_name), the gnl list
-** starting from the first line with info about a link and the linked list of
-** with all the rooms. Find_links_to_room makes a linked list of t_names (which
-** has a ptr to t_room struct). The list will have all the rooms that have
-** a link from r_name.
-*/
-
-t_names     *find_links_to_room(char *r_name, t_list *list, t_room *rooms)
-{
-    t_names *links;
-    t_names	*head;
-    t_room	*cur;
-	char	*tmp;
-
-    head = NULL;
-    while (list)
-    {
-        if ((tmp = strstr_links(r_name, (char*)list->content)))
-        {
-            cur = rooms;
-            while (cur)
-            {
-                if (!ft_strncmp(tmp, cur->name, ft_strlen(cur->name)))
-                {
-                    if(!(links = (t_names*)malloc(sizeof(t_names))))
-						return (NULL); //MALLOC ERROR
-					links->room = cur;
-					links->next = NULL;
-					room_add(&head, links);
-					tmp = ft_strchr(list->content, '-');
-					tmp[0] = '+';
-					break ;
-        		}
-				cur = cur->next;
-            }
-        }
-        list = list->next;
-    }
-    return (head);
-}
-
-/*
-** So far this function only handles the starting room, meaning
-** that it gets a list of rooms connected to it, counts the
-** number of those connections and builds the links.
-** Maybe the *links could be our queue where we read from.
-*/
-
-void	build_link_tree(t_room *start, t_room *rooms, t_list *list, t_lem *lem)
-{
-	t_names *links;
-	int		i;
-								//start huone
-	lem->read = NULL;
-	lem->que = NULL;
-	links = find_links_to_room(start->name, list, rooms);
-	lem->link_num = count_links(links);
-	lem->read = build_links_to_room(start, rooms, links, lem);
-	lem->que = NULL;
-	//looppi
-
-	//2 linked lists: Queue Visited
-	//aluks Queue on links
-
-	// read = links;
-	
-
-	// while (read)
-	// {
-	// 	links = find_links_to_room(start->links[i]->name, list, rooms);
-	// 	links_num = count_links(links);
-	// 	build_links_to_room(start->links[i], rooms, links, links_num);
-	// 	i++;
-	// 	while (que && que->next)
-			
-		//yhdistä juuri saatu links que:n loppuun
-
-
-	// start->links[0]->links[i]
-	// start->links[0]->links[i]-name
-	// free(links);
-
-}
 
 int		main(int argc, char **argv)
 {
@@ -159,7 +40,7 @@ int		main(int argc, char **argv)
 		cur = cur->next;
 	}
 	lem.ptr = NULL;
-	build_link_tree(room, room, list);
+	build_link_tree(room, room, list, &lem);
 
 //	lem.start = find_start_end(head, 1);
   //  lem.end = find_start_end(head, 2);
