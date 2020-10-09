@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 16:58:32 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/08 18:19:26 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/09 17:03:53 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ int		main(int argc, char **argv)
 	t_room	*cur;
 	int		links_num;
 
-
+	lem.s_bneck = 0;
+	lem.e_bneck = 0;
 	list = save_info(0);
 	head = list;
 	while (list)		// Prints out the whole input.

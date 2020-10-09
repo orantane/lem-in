@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:29:37 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/08 20:12:58 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/09 19:45:01 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,16 +130,14 @@ char	*strstr_links(char *needle, char *haystack)
 	while (haystack[i] != '\0' && haystack[i] != '\n')
 	{
 		j = 0;
-		while (haystack[i + j] == needle[j] ||
-				(needle[j] == '\n' || needle[j] == '\0'))
+		while (needle[j] && haystack[i + j] && haystack[i + j] == needle[j])
 		{
 			if (!(i == 0 || (i > 0 && haystack[i - 1] == '-')))
 				break ;
-			if (needle[j] == '\0')
-				return (NULL);
+			if (needle[j] == '\0' && (haystack[i + j] == '\n' || haystack[i + j] == '\0' || haystack[i + j] == '-'))
+				break ;
 			j++;
-			if ((needle[j] == '\0' || needle[j] == '\n') &&
-				(haystack[i + j] == '\n' || haystack[i + j] == '\0'))
+			if (needle[j] == '\0' && (haystack[i + j] == '\n' || haystack[i + j] == '\0'))
 				return (haystack);
 			else if ((needle[j] == '\0' || needle[j] == '\n') &&
 					haystack[i + j] == '-')
@@ -159,9 +157,50 @@ void	print_everything(t_room *room, t_lem *lem)
 		return ;
 	if (!(ft_strcmp(room->name, lem->end)))
 		return ;
-	while (room->links[++i])
+	while (room->links && room->links[++i])
 		printf("Room '%s' is on lvl '%d' and linked to room '%s'.\n", room->name, room->lvl, room->links[i]->name);
 	i = -1;
-	while (room->links[++i])
-		print_everything(room->links[i], lem);
+	while (room->links && room->links[++i])
+	{
+		if (room->links[i]->lvl != room->lvl)
+			print_everything(room->links[i], lem);
+	}
+}
+
+void	make_double_link(t_room *room, t_room *origin)
+{
+	int 	j;
+	t_room	**new;
+
+	j = -1;
+	if (room->links)
+	{
+		if (!(new = (t_room**)malloc(sizeof(t_room*) * (room->link_num + 2))))
+			exit(0); //MALLOC ERROR
+		while (++j < room->link_num)
+			new[j] = room->links[j];
+		new[j] = origin;
+		new[j + 1] = NULL;
+		room->links = new;
+		room->link_num += 1;
+	}
+	else
+	{
+		if (!(room->links = (t_room**)malloc(sizeof(t_room*) * 2)))
+			exit(0); //MALLOC ERROR
+		room->links[0] = origin;
+		room->links[1] = NULL;
+	}
+}
+
+int		strequ_newline(char *room, char *link)
+{
+	unsigned int	i;
+
+	i = 0;
+	while ((room[i] && link[i] && room[i] == link[i]))
+		i++;
+	if ((!room[i] && !link[i]) || (!room[i] && link[i] == '\n') || (!room[i] && link[i] == '-'))
+		return (1);
+	return (0);
 }

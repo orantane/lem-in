@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 17:46:02 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/08 20:40:50 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/09 18:47:56 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_names		*join_lists(t_names *new, t_names *old)
 	t_names	*cur;
 
 	if (!new)
-		return (NULL);
+		return (old);
 	if (!old)
 		return (new);
 	else
@@ -31,7 +31,7 @@ t_names		*join_lists(t_names *new, t_names *old)
 				cur = cur->next;
 			cur->next = old;
 		}
-		return (cur);
+		return (new);
 	}
 }
 
@@ -45,13 +45,12 @@ void    links_to_room(t_room *cur, t_room *rooms, t_names *links, t_lem *lem)
 {
     t_names	*tmp;
 	int		i;
-	t_names	*new;
+	t_room	**new;
 
-	if (!(cur->links = (t_room**)malloc(sizeof(t_room*) * (lem->link_num + 1))))
+	if (!(cur->links = (t_room**)malloc(sizeof(t_room*) * (cur->link_num + 1))))
 		exit(0); //MALLOC ERROR
 	i = 0;
-	cur->lvl = lem->lvl;
-    while (rooms && i < lem->link_num)
+    while (rooms && i < cur->link_num)
     {
 		tmp = links;
 		while (tmp)
@@ -76,27 +75,30 @@ void    links_to_room(t_room *cur, t_room *rooms, t_names *links, t_lem *lem)
 ** that have a link from r_name.
 */
 
-t_names     *find_links_to_room(char *r_name, t_list *list, t_room *rooms)
+t_names     *find_links_to_room(t_room *room, t_list *list, t_room *all, t_lem *lem)
 {
     t_names *links;
     t_names	*head;
     t_room	*cur;
 	char	*tmp;
 
+	if (room->lvl == -1 || lem->lvl < room->lvl)
+		room->lvl = lem->lvl;
 //suojaa needle, jos on tyhja tai \n
     head = NULL;
     while (list)
     {
-        if ((tmp = strstr_links(r_name, (char*)list->content)))
+        if ((tmp = strstr_links(room->name, (char*)list->content)))
         {
-            cur = rooms;
+            cur = all;
             while (cur)
             {
-                if (!ft_strncmp(tmp, cur->name, ft_strlen(cur->name)))
+                if (strequ_newline(cur->name, tmp))
                 {
                     if(!(links = (t_names*)malloc(sizeof(t_names))))
 						return (NULL); //MALLOC ERROR
 					links->room = cur;
+					links->origin = room;
 					links->next = NULL;
 					name_add(&head, links);
 					tmp = ft_strchr(list->content, '-');
@@ -127,8 +129,9 @@ void	build_link_tree(t_room *start, t_room *rooms, t_list *list, t_lem *lem)
 
 	lem->lvl = 0;
 	read = NULL;
-	links = find_links_to_room(start->name, list, rooms);
-	lem->link_num = count_links(links);
+	links = find_links_to_room(start, list, rooms, lem);
+	start->link_num = count_links(links);
+	lem->s_bneck = start->link_num;
 	read = links;
 	links_to_room(start, rooms, links, lem);
 	while (read != NULL)
@@ -139,19 +142,27 @@ void	build_link_tree(t_room *start, t_room *rooms, t_list *list, t_lem *lem)
 		{
 			if (!(ft_strcmp(read->room->name, lem->end)) && read->room != NULL)
 			{
+				lem->e_bneck++;
 				tmp = read->next;
 				free(read);
 				read = tmp;
 				continue ;
 			}
-			links = find_links_to_room(read->room->name, list, rooms);
+			links = find_links_to_room(read->room, list, rooms, lem);
             if (links)
             {
-                lem->link_num = count_links(links);
+                read->room->link_num = count_links(links);
                 links_to_room(read->room, rooms, links, lem);
             }
 			que = join_lists(links, que);
-            tmp = read->next;
+			tmp = que;
+			while (tmp)
+			{
+				if (tmp->room == read->room)
+					make_double_link(read->room, tmp->origin);
+				tmp = tmp->next;
+			}
+		    tmp = read->next;
             free(read);
             read = tmp;
 		}
