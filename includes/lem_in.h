@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:33:49 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/09 18:46:11 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/14 15:04:21 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,7 @@ void				room_add(t_room **alst, t_room *new);
 t_room 				*room_names(t_list *list, t_lem *lem);
 void				find_start_end(t_room *room);
 char   				*strstr_links(char *needle, char *haystack);
-void				links_to_room(t_room *cur, t_room *rooms,
-					t_names *links, t_lem *lem);
+void				links_to_room(t_room *cur, t_room *rooms, t_names *links);
 t_names     		*find_links_to_room(t_room *room, t_list *list, t_room *all, t_lem *lem);
 void				build_link_tree(t_room *start, t_room *rooms, t_list *list,
 					t_lem *lem);

@@ -20,7 +20,6 @@ t_room   *room_names(t_list *list, t_lem *lem)
 {
 	t_room	*head;
     t_room *room;
-	t_room *temp;
 
 	head = NULL;
     while (list)

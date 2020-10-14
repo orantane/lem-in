@@ -3,43 +3,59 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: orantane <orantane@student.hive.fi>        +#+  +:+       +#+         #
+#    By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/11/17 16:20:24 by orantane          #+#    #+#              #
-#    Updated: 2020/08/21 20:44:56 by orantane         ###   ########.fr        #
+#    Created: 2020/10/14 14:58:42 by ksalmi            #+#    #+#              #
+#    Updated: 2020/10/14 15:07:37 by ksalmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = orantane.filler
+NAME = lem-in
 
-SRC = srcs/*.c
+SRC_NAME = only_debuggin_main.c \
+save_info.c \
+nodes.c \
+links.c \
+names.c \
+tools.c \
 
-OBJ = *.o
+SRC_DIR = src/
 
-LIB = libft/libft.a
+LIB_DIR = lib/
 
-HEADER = includes/filler.h
+LIB = lib/libft.a
+
+OBJ_DIR = obj/
+
+INCLUDES = -I includes/ -I lib/includes/
+
+SRCS = $(addprefix $(SRC_DIR),$(SRC_NAME))
+
+OBJ = $(subst .c,.o,$(SRC_NAME))
+
+OBJECTS = $(addprefix $(OBJ_DIR),$(OBJ))
 
 FLAGS = -Wall -Wextra -Werror
 
-RUN_LIB = make --no-print-directory -C libft/
+.PHONY: all clean fclean re
 
-all: 
-	@$(RUN_LIB)
-	@make --no-print-director $(NAME)
+all: $(NAME)
 
-$(NAME): $(OBJ)
-	gcc $(FLAGS) -o $(NAME) $(OBJ) $(LIB) -I $(HEADER)
-
-$(OBJ):
-	gcc $(FLAGS) -c $(SRC) -I $(HEADER)
-
-re: fclean all
+$(NAME):
+	make -C $(LIB_DIR)
+	gcc -c $(FLAGS) $(SRCS) $(INCLUDES)
+	mkdir -p $(OBJ_DIR)
+	mv -f $(OBJ) $(OBJ_DIR)
+	gcc $(FLAGS) $(OBJECTS) $(INCLUDES) $(LIB) -o $(NAME)
+	@echo $(NAME) "compiled..."
 
 clean:
-	rm -rf $(OBJ)
+	make clean -C $(LIB_DIR)
+	/bin/rm -f $(OBJECTS)
+	/bin/rm -rf $(OBJ_DIR)
 
 fclean: clean
-	rm -rf $(NAME)
+	make fclean -C $(LIB_DIR)
+	/bin/rm -f $(NAME)
 
-.PHONY = all re clean fclean
+re: fclean all
