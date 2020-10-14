@@ -30,7 +30,8 @@ int		main(int argc, char **argv)
 		}
 		lem.ptr = NULL;
 		build_link_tree(room, room, lem.links, &lem);
-		print_everything(room, &lem);
+		make_path_array(&lem, room);
+		//print_everything(room, &lem);
 	//	lem.start = find_start_end(head, 1);
 	//  lem.end = find_start_end(head, 2);
 	}

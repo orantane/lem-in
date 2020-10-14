@@ -6,7 +6,7 @@
 #    By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 14:58:42 by ksalmi            #+#    #+#              #
-#    Updated: 2020/10/14 15:07:37 by ksalmi           ###   ########.fr        #
+#    Updated: 2020/10/14 19:12:34 by ksalmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ nodes.c \
 links.c \
 names.c \
 tools.c \
+path.c \
 
 SRC_DIR = src/
 
@@ -43,7 +44,7 @@ all: $(NAME)
 
 $(NAME):
 	make -C $(LIB_DIR)
-	gcc -c $(FLAGS) $(SRCS) $(INCLUDES)
+	gcc -g -c $(FLAGS) $(SRCS) $(INCLUDES)
 	mkdir -p $(OBJ_DIR)
 	mv -f $(OBJ) $(OBJ_DIR)
 	gcc $(FLAGS) $(OBJECTS) $(INCLUDES) $(LIB) -o $(NAME)

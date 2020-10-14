@@ -6,11 +6,56 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:29:37 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/14 15:05:44 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/14 20:04:36 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+
+/*
+**  Makes the rooms links-array into a t_names linked list.
+*/
+
+t_names     *arr_to_list(t_room *room, int link_num)
+{
+    int     i;
+    t_names *head;
+    t_names *new;
+
+	head = NULL;
+	head = NULL;
+	head = NULL;
+    i = 0;
+	while (room->links[i] && i < link_num)
+    {
+        if (!(new = (t_names *)malloc(sizeof(t_names))))
+            return (NULL); //MALLOC ERROR
+        new->room = room->links[i];
+		new->origin = room;
+		new->next = NULL;
+        name_add(&head, new);
+        i++;
+    }
+    return (head);
+}
+
+/*
+** Free a t_names linked list.
+*/
+
+void	free_names_list(t_names *list)
+{
+	t_names	*tmp;
+
+	while (list)
+	{
+		tmp = list->next;
+		free(list);
+		list = tmp;
+	}
+	list = NULL;
+}
+
 
 /*
 ** Counts the amount of nodes in a linked list.
@@ -105,4 +150,17 @@ void	print_everything(t_room *room, t_lem *lem)
 		if (room->links[i]->lvl != room->lvl)
 			print_everything(room->links[i], lem);
 	}
+}
+
+void	init_arr_null(int num, t_names **arr)
+{
+	int	i;
+
+	i = 0;
+	while (i < num)
+	{
+		arr[i] = NULL;
+		i++;
+	}
+	arr[i] = NULL;
 }

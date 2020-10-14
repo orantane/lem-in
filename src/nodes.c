@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 14:54:47 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/14 14:55:55 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/14 19:09:34 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ t_room	*new_name_node(char *content, int se)
 	new->x = ft_atoi(tmp + 1);
 	new->y = ft_atoi(ft_strchr((tmp + 1), ' '));
 	new->se = se;
+	new->lnkd = 0;
 	new->lvl = -1;
+	new->vis = 0;
 	new->next = NULL;
 	return (new);
 }

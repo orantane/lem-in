@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:33:49 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/14 15:04:21 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/14 20:43:04 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,15 @@
 # include "libft.h"
 # include "get_next_line.h"
 # include "ft_printf.h"
+# define MAX_PATHS 3
 
 typedef struct		s_room
 {
 	char			*name;
 	int				se;
+	int				lnkd;
 	int				lvl;
+	int				vis;
 	int				unq;
 	int				avoid;
 	int				x;
@@ -72,4 +75,10 @@ t_names				*join_lists(t_names *new, t_names *old);
 void				make_double_link(t_room *room, t_room *origin);
 void				print_everything(t_room *room, t_lem *lem);
 int					strequ_newline(char *room, char *link);
+void				init_arr_null(int num, t_names **arr);
+void				free_names_list(t_names *list);
+t_names     		*arr_to_list(t_room *room, int link_num);
+t_names				**make_path_array(t_lem *lem, t_room *start);
+t_names    			*find_path(t_room *start);
+t_names     		*create_path(t_names *search, t_room *start);
 #endif

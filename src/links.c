@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 17:46:02 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/14 15:07:14 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/14 19:09:32 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void    links_to_room(t_room *cur, t_room *rooms, t_names *links)
 		rooms = rooms->next;
 	}
 	cur->links[i] = NULL;
+	cur->lnkd = 1;
 }
 
 /*
@@ -92,7 +93,7 @@ t_names     *find_links_to_room(t_room *room, t_list *list, t_room *all, t_lem *
             cur = all;
             while (cur)
             {
-                if (strequ_newline(cur->name, tmp))
+                if (cur != all && strequ_newline(cur->name, tmp))
                 {
                     if(!(links = (t_names*)malloc(sizeof(t_names))))
 						return (NULL); //MALLOC ERROR
@@ -100,8 +101,8 @@ t_names     *find_links_to_room(t_room *room, t_list *list, t_room *all, t_lem *
 					links->origin = room;
 					links->next = NULL;
 					name_add(&head, links);
-					tmp = ft_strchr(list->content, '-');
-					tmp[0] = '+';
+					//tmp = ft_strchr(list->content, '-');
+					//tmp[0] = '+';
 					break ;
         		}
 				cur = cur->next;
@@ -139,7 +140,12 @@ void	build_link_tree(t_room *start, t_room *rooms, t_list *list, t_lem *lem)
         lem->lvl++;
 		while (read != NULL)
 		{
-			if (!(ft_strcmp(read->room->name, lem->end)) && read->room != NULL)
+			if (read->room->lnkd)
+			{
+				read = read->next;
+				continue ;
+			}
+			if (read->room != NULL && !(ft_strcmp(read->room->name, lem->end)))
 			{
 				lem->e_bneck++;
 				tmp = read->next;
@@ -148,11 +154,11 @@ void	build_link_tree(t_room *start, t_room *rooms, t_list *list, t_lem *lem)
 				continue ;
 			}
 			links = find_links_to_room(read->room, list, rooms, lem);
-            if (links)
-            {
-                read->room->link_num = count_links(links);
-                links_to_room(read->room, rooms, links);
-            }
+			if (links)
+			{
+				read->room->link_num = count_links(links);
+				links_to_room(read->room, rooms, links);
+			}
 			que = join_lists(links, que);
 			tmp = que;
 			while (tmp)
@@ -161,9 +167,9 @@ void	build_link_tree(t_room *start, t_room *rooms, t_list *list, t_lem *lem)
 					make_double_link(read->room, tmp->origin);
 				tmp = tmp->next;
 			}
-		    tmp = read->next;
-            free(read);
-            read = tmp;
+			tmp = read->next;
+			free(read);
+			read = tmp;
 		}
 		read = que;
 	}

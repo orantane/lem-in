@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 16:58:32 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/09 17:03:53 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/14 19:10:37 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		main(int argc, char **argv)
 		ft_printf("%s", list->content);
 		list = list->next;
 	}
-	lem.ants = ft_atoi(head->content);		// Saves the amount of ants.
+//	lem.ants = ft_atoi(head->content);		// Saves the amount of ants.
 	room = room_names(head->next, &lem);	// Creates and initializes the big room structure.
 	cur = room;
 	while (cur)
