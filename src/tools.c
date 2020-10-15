@@ -6,17 +6,20 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:29:37 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/14 20:04:36 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/15 18:24:44 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
 /*
-**  Makes the rooms links-array into a t_names linked list.
+** Makes the rooms links-array into a t_names linked list.
+** After the first pass, avoids previously used rooms by using the
+** "avoid" variable. If all the "child" rooms are rooms to be avoided,
+** it doesn't avoid any of them.
 */
 
-t_names     *arr_to_list(t_room *room, int link_num)
+t_names     *arr_to_list(t_room *room, int link_num, int avoid)
 {
     int     i;
     t_names *head;
@@ -28,14 +31,22 @@ t_names     *arr_to_list(t_room *room, int link_num)
     i = 0;
 	while (room->links[i] && i < link_num)
     {
-        if (!(new = (t_names *)malloc(sizeof(t_names))))
-            return (NULL); //MALLOC ERROR
-        new->room = room->links[i];
-		new->origin = room;
+		if (room->links[i]->origin != NULL || room->links[i]->avoid == avoid)
+		{
+			i++;
+			continue ;
+		}
+		if (!(new = (t_names *)malloc(sizeof(t_names))))
+			return (NULL); //MALLOC ERROR
+		new->room = room->links[i];
+		if (new->room->origin == NULL)
+			new->room->origin = room;
 		new->next = NULL;
-        name_add(&head, new);
-        i++;
+		name_add(&head, new);
+		i++;
     }
+	if (room->links[0] && !head && avoid == 1)
+		arr_to_list(room, link_num, 0);
     return (head);
 }
 
@@ -49,6 +60,8 @@ void	free_names_list(t_names *list)
 
 	while (list)
 	{
+		if (list->room->origin)
+			list->room->origin = NULL;
 		tmp = list->next;
 		free(list);
 		list = tmp;
@@ -152,6 +165,10 @@ void	print_everything(t_room *room, t_lem *lem)
 	}
 }
 
+/*
+** Sets the given pointer array to 0's.
+*/
+
 void	init_arr_null(int num, t_names **arr)
 {
 	int	i;
@@ -163,4 +180,16 @@ void	init_arr_null(int num, t_names **arr)
 		i++;
 	}
 	arr[i] = NULL;
+}
+
+int		strequ_newline(char *room, char *link)
+{
+	unsigned int	i;
+
+	i = 0;
+	while ((room[i] && link[i] && room[i] == link[i]))
+		i++;
+	if ((!room[i] && !link[i]) || (!room[i] && link[i] == '\n') || (!room[i] && link[i] == '-'))
+		return (1);
+	return (0);
 }

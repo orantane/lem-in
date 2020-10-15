@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 17:46:02 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/14 19:09:32 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/15 18:05:21 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,62 +160,10 @@ void	build_link_tree(t_room *start, t_room *rooms, t_list *list, t_lem *lem)
 				links_to_room(read->room, rooms, links);
 			}
 			que = join_lists(links, que);
-			tmp = que;
-			while (tmp)
-			{
-				if (tmp->room == read->room)
-					make_double_link(read->room, tmp->origin);
-				tmp = tmp->next;
-			}
 			tmp = read->next;
 			free(read);
 			read = tmp;
 		}
 		read = que;
 	}
-}
-
-/*
-** Adds a double-link, meaning a link from the target room to the origin room
-** by allocating the existing link_num amount (+ 1 for new link, +1 for NULL)
-** of t_room pointers in an array, copies the existing links, adds the new
-** link and ends the array in NULL.
-*/
-
-void	make_double_link(t_room *room, t_room *origin)
-{
-	int 	j;
-	t_room	**new;
-
-	j = -1;
-	if (room->links)
-	{
-		if (!(new = (t_room**)malloc(sizeof(t_room*) * (room->link_num + 2))))
-			exit(0); //MALLOC ERROR
-		while (++j < room->link_num)
-			new[j] = room->links[j];
-		new[j] = origin;
-		new[j + 1] = NULL;
-		room->links = new;
-		room->link_num += 1;
-	}
-	else
-	{
-		if (!(room->links = (t_room**)malloc(sizeof(t_room*) * 2)))
-			exit(0); //MALLOC ERROR
-		room->links[0] = origin;
-		room->links[1] = NULL;
-	}
-}
-
-int		strequ_newline(char *room, char *link)
-{
-	unsigned int	i;
-
-	i = 0;
-	while ((room[i] && link[i] && room[i] == link[i]))
-		i++;
-	if ((!room[i] && !link[i]) || (!room[i] && link[i] == '\n') || (!room[i] && link[i] == '-'))
-		return (1);
-	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 18:07:40 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/14 21:21:45 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/15 18:24:46 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,27 +22,33 @@ t_names     *create_path(t_names *search, t_room *start)
     if (!(path = (t_names *)malloc(sizeof(t_names))))
         return (NULL); //MALLOC ERROR
     path->room = search->room;
-    path->origin = search->origin;
+    path->room->origin = search->room->origin;
     path->next = NULL;
     name_add(&head, path);
     while (search)
     {
-        if (path->origin == start)
+        if (path->room->origin == start)
         {
+            path->room->origin = NULL;
             free_names_list(search);
             return (head);
         }
         cur = search->next;
-        free(search);
-        if (cur && cur->room == path->origin)
+        if (cur && cur->room == path->room->origin)
         {
             if (!(path = (t_names *)malloc(sizeof(t_names))))
                 return (NULL); //MALLOC ERROR
             path->room = cur->room;
-            path->origin = cur->origin;
+            path->room->origin = cur->room->origin;
             path->next = NULL;
+            path->room->vis = 1;
             name_add(&head, path);
+            if (head->next)
+                head->next->room->origin = NULL;
         }
+        else
+            cur->room->origin = NULL; // Does not set all origins to NULL, needs to be fixed!!!
+        free(search);
         search = cur;
     }
     return (NULL);
@@ -56,14 +62,14 @@ t_names     *find_path(t_room *start)
     t_names *que;
     t_names *tmp;
 
-    read = arr_to_list(start, start->link_num);
+    read = arr_to_list(start, start->link_num, 1);
     head = NULL;
     while (read != NULL)
     {
         que = NULL;
         while (read != NULL)
         {
-            if (read->room->vis)
+            if (read->room->vis) //|| read->room->origin != NULL)
             {
                 read = read->next;
                 continue ;
@@ -72,12 +78,10 @@ t_names     *find_path(t_room *start)
                 return (NULL); //MALLOC ERROR
             search->room = read->room;
             search->next = NULL;
-            search->origin = read->origin;
             name_add(&head, search);
             if (search->room == start->next)
                 return (create_path(search, start));
-            search->room->vis = 1; //do this in create_path
-            tmp = arr_to_list(search->room, search->room->link_num);
+            tmp = arr_to_list(search->room, search->room->link_num, 1);
             que = join_lists(tmp, que);
             tmp = read->next;
             free(read);
@@ -89,6 +93,25 @@ t_names     *find_path(t_room *start)
     return (NULL);
 }
 
+void        init_next_pass(int start, int end, t_names **arr, t_room *r_end)
+{
+    int     i;
+    t_names *cur;
+
+    i = start;
+    while (i < end)
+    {
+        cur = arr[i];
+        while (cur)
+        {
+            cur->room->vis = 0;
+            if (cur->room != r_end)
+                cur->room->avoid = 1;
+            cur = cur->next;
+        }
+        i++;
+    }
+}
 
 t_names     **make_path_array(t_lem *lem, t_room *start)
 {
@@ -97,8 +120,14 @@ t_names     **make_path_array(t_lem *lem, t_room *start)
 	int		max;
 	int		i;
     t_names *tmp;
+    int     pass[10000];
+    int     round;
 
-	i = 0;
+	i = -1;
+    while (++i < 10000)
+        pass[i] = 0;
+    i = 0;
+    round = 1;
 	max = lem->s_bneck * MAX_PATHS;
     if (!(arr = (t_names **)malloc(sizeof(t_names *) * max + 1)))
         return (NULL); //Malloc error
@@ -108,7 +137,12 @@ t_names     **make_path_array(t_lem *lem, t_room *start)
 	{
 		arr[i] = find_path(start);
 		if (arr[i] == NULL)
-			break ; // Currently only does one pathfinding pass of the tree.
+        {
+			pass[round] = i;
+            init_next_pass(pass[round - 1], pass[round], arr, start->next);
+            round++;
+            
+        }
         i++;
 	}
     i = 0;
