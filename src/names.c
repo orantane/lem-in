@@ -27,20 +27,20 @@ t_room   *room_names(t_list *list, t_lem *lem)
 		if (!ft_strncmp((char*)list->content, "##start", 7))
 		{
             list = list->next;
-			room = new_name_node((char*)list->content, 0);
+			room = new_room_node((char*)list->content, 0);
             room_add(&head, room);
 			lem->start = ft_strdup(room->name);
 		}
 		else if (!ft_strncmp((char*)list->content, "##end", 5))
 		{
             list = list->next;
-			room = new_name_node((char*)list->content, 1);
+			room = new_room_node((char*)list->content, 1);
 		    room_add(&head, room);
 			lem->end = ft_strdup(room->name);
 		}
 		else if (ft_strncmp((char*)list->content, "#", 1) && ft_strchr((char*)list->content, ' '))
 		{
-			room = new_name_node((char*)list->content, 2);
+			room = new_room_node((char*)list->content, 2);
 		    room_add(&head, room);
 		}
 		else if (ft_strncmp(list->content, "#", 1) && !ft_strchr(list->content, ' '))

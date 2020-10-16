@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 17:46:02 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/15 18:05:21 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/16 14:58:30 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,6 @@ t_names     *find_links_to_room(t_room *room, t_list *list, t_room *all, t_lem *
 					links->origin = room;
 					links->next = NULL;
 					name_add(&head, links);
-					//tmp = ft_strchr(list->content, '-');
-					//tmp[0] = '+';
 					break ;
         		}
 				cur = cur->next;

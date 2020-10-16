@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 14:54:47 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/15 18:24:47 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/16 20:06:55 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 ** X- and Y-coordinates needed for the visualizer.
 */
 
-t_room	*new_name_node(char *content, int se)
+t_room	*new_room_node(char *content, int se)
 {
 	t_room	*new;
 	int		i;
@@ -61,7 +61,24 @@ void	room_add(t_room **alst, t_room *new)
 }
 
 /*
-** Adds a new t_name-node to the beginning of the linked list.
+** Creates a new t_names-node
+*/
+
+t_names		*new_names_node(t_room *room, t_room *origin)
+{
+	t_names	*node;
+
+    if (!(node = (t_names *)malloc(sizeof(t_names))))
+        return (NULL); //MALLOC ERROR
+	node->room = room;
+	node->origin = origin;
+	node->next = NULL;
+	node->len = 0;
+	return (node);
+}
+
+/*
+** Adds a new t_names-node to the beginning of the linked list.
 */
 
 void	name_add(t_names **alst, t_names *new)

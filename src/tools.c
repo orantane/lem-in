@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:29:37 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/15 18:24:44 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/16 16:27:28 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_names     *arr_to_list(t_room *room, int link_num, int avoid)
     i = 0;
 	while (room->links[i] && i < link_num)
     {
-		if (room->links[i]->origin != NULL || room->links[i]->avoid == avoid)
+		if (room->links[i]->origin != NULL || room->links[i]->avoid == avoid || room->links[i]->vis == 1)
 		{
 			i++;
 			continue ;
@@ -46,7 +46,7 @@ t_names     *arr_to_list(t_room *room, int link_num, int avoid)
 		i++;
     }
 	if (room->links[0] && !head && avoid == 1)
-		arr_to_list(room, link_num, 0);
+		head = arr_to_list(room, link_num, 0);
     return (head);
 }
 
@@ -132,7 +132,8 @@ char	*strstr_links(char *needle, char *haystack)
 		{
 			if (!(i == 0 || (i > 0 && haystack[i - 1] == '-')))
 				break ;
-			if (needle[j] == '\0' && (haystack[i + j] == '\n' || haystack[i + j] == '\0' || haystack[i + j] == '-'))
+			if (needle[j] == '\0' && (haystack[i + j] == '\n' || \
+				haystack[i + j] == '\0' || haystack[i + j] == '-'))
 				break ;
 			j++;
 			if (needle[j] == '\0' && (haystack[i + j] == '\n' || haystack[i + j] == '\0'))
@@ -144,25 +145,6 @@ char	*strstr_links(char *needle, char *haystack)
 		i++;
 	}
 	return (NULL);
-}
-
-void	print_everything(t_room *room, t_lem *lem)
-{
-	int	i;
-
-	i = -1;
-	if (!room)
-		return ;
-	if (!(ft_strcmp(room->name, lem->end)))
-		return ;
-	while (room->links && room->links[++i])
-		printf("Room '%s' is on lvl '%d' and linked to room '%s'.\n", room->name, room->lvl, room->links[i]->name);
-	i = -1;
-	while (room->links && room->links[++i])
-	{
-		if (room->links[i]->lvl != room->lvl)
-			print_everything(room->links[i], lem);
-	}
 }
 
 /*
@@ -189,7 +171,22 @@ int		strequ_newline(char *room, char *link)
 	i = 0;
 	while ((room[i] && link[i] && room[i] == link[i]))
 		i++;
-	if ((!room[i] && !link[i]) || (!room[i] && link[i] == '\n') || (!room[i] && link[i] == '-'))
+	if ((!room[i] && !link[i]) || (!room[i] && link[i] == '\n') || \
+		(!room[i] && link[i] == '-'))
 		return (1);
 	return (0);
+}
+
+int		check_all_avoids(t_names *path, t_room *end)
+{
+	while (path)
+	{
+		if (path->room->avoid == 0)
+			break;
+		path = path->next;
+	}
+	if (path->room == end)
+		return (1);
+	else
+		return (0);
 }

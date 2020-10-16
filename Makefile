@@ -6,7 +6,7 @@
 #    By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 14:58:42 by ksalmi            #+#    #+#              #
-#    Updated: 2020/10/14 19:12:34 by ksalmi           ###   ########.fr        #
+#    Updated: 2020/10/16 20:08:46 by ksalmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,8 @@ links.c \
 names.c \
 tools.c \
 path.c \
+print.c \
+path_select.c \
 
 SRC_DIR = src/
 
