@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_select.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: orantane <oskari.rantanen@student.hive.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 18:34:38 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/16 21:04:12 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/19 14:55:38 by orantane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,9 @@ int		path_select(t_lem *lem, int *pass, t_names **arr)
 	int		i;
 	int		ants;
 	int		j;
-    int     best_value;//save best value
-    int     best_j; //save best ending point --- from pass value function
-    int     best_start;//save best starting point
+ //   int     best_value;//save best value
+//    int     best_j; //save best ending point --- from pass value function
+//    int     best_start;//save best starting point
 
 	i = -1;
 	j = 0;
