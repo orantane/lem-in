@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:33:49 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/19 17:04:43 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/19 19:19:55 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include "libft.h"
 # include "get_next_line.h"
 # include "ft_printf.h"
-# define MAX_PATHS 3
+# define MAX_PATHS 6
 # define ROUNDS 100
 
 typedef struct		s_room

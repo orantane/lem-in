@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 18:07:40 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/19 17:46:54 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/19 19:39:09 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ t_names     **make_path_array(t_lem *lem, t_room *start)
     if (!(arr = (t_names **)malloc(sizeof(t_names *) * max + 1)))
         return (NULL); //Malloc error
     init_arr_null(max, arr);
-    while (i < max /* No more paths available! */)
+    while (i < max && round < ROUNDS /* No more paths available! */)
 	{
 		arr[i] = find_path(start);
         /*if (arr[i] && check_all_avoids(arr[i], start->next))
@@ -145,7 +145,7 @@ t_names     **make_path_array(t_lem *lem, t_room *start)
         }
         i++;
 	}
-    print_path_array(arr, pass); //only for checking, remove!
+   // print_path_array(arr, pass); //only for checking, remove!
     lem->value = path_select(lem, pass, arr);
     return (arr);
 }

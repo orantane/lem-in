@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 18:34:38 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/19 17:37:23 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/19 19:49:28 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ int		*path_select(t_lem *lem, int *pass, t_names **arr)
 	while (pass[++i + 1] > 0)
 	{
         pass_sort_paths_len(arr, pass[i], pass[i + 1]);
+        if (!arr[pass[i]])
+            break ;
         tmp = pass_value(lem->ants, arr, pass[i], pass[i + 1]);
         if (!value)
             value = tmp;

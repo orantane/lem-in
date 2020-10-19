@@ -6,13 +6,13 @@
 #    By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 14:58:42 by ksalmi            #+#    #+#              #
-#    Updated: 2020/10/16 20:08:46 by ksalmi           ###   ########.fr        #
+#    Updated: 2020/10/19 19:52:19 by ksalmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = lem-in
 
-SRC_NAME = only_debuggin_main.c \
+SRC_NAME = main.c \
 save_info.c \
 nodes.c \
 links.c \

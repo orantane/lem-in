@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 16:58:32 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/19 19:27:14 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/19 19:58:41 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int		main()
 	t_names	**paths;
 	
 
-	if (argc > 1)
-	{
+	// if (argc > 1)
+	// {
 		list = save_info(0);
 		head = list;
 		// while (list)		// Prints out the whole input.
@@ -30,7 +30,7 @@ int		main()
 		// 	ft_printf("%s", list->content);
 		// 	list = list->next;
 		// }
-		//ft_putchar('\n');
+		// ft_putchar('\n');
 		head = ants_amount(head, &lem);		// Saves the amount of ants.
 		room = room_names(head, &lem);	// Creates and initializes the big room structure.
 		// cur = room;
@@ -48,6 +48,6 @@ int		main()
 		//print_everything(room, &lem);
 	//	lem.start = find_start_end(head, 1);
 	//  lem.end = find_start_end(head, 2);
-	}
+	//}
 	return (0);
 }
