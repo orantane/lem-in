@@ -6,11 +6,36 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:29:37 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/16 16:27:28 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/19 15:41:04 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+
+/*
+** Finds and saves the number of ants into t_lem struct ignoring comment lines
+** and returning the list from where the room names should begin.
+*/
+
+t_list		*ants_amount(t_list *list, t_lem *lem)
+{
+	char	*str;
+
+	while (list)
+	{
+		str = (char*)list->content;
+		if (str[0] == '#')
+		{
+			list = list->next;
+			continue ;
+		}
+		if (!ft_isdigit(str[0]))
+			exit(0); //error wrong format
+		lem->ants = ft_atoi(list->content);
+		break;
+	}
+	return (list->next);
+}
 
 /*
 ** Makes the rooms links-array into a t_names linked list.
@@ -31,7 +56,8 @@ t_names     *arr_to_list(t_room *room, int link_num, int avoid)
     i = 0;
 	while (room->links[i] && i < link_num)
     {
-		if (room->links[i]->origin != NULL || room->links[i]->avoid == avoid || room->links[i]->vis == 1)
+		if (room->links[i]->origin != NULL || room->links[i]->avoid == avoid || \
+			 room->links[i]->vis == 1)
 		{
 			i++;
 			continue ;

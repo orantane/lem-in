@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_select.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: orantane <oskari.rantanen@student.hive.    +#+  +:+       +#+        */
+/*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 18:34:38 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/19 14:55:38 by orantane         ###   ########.fr       */
+/*   Updated: 2020/10/19 17:37:23 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,25 @@ int		max_flow_pass(int *pass, int i)
 	return (flow);
 }
 */
-int		pass_value(int ants, t_names **arr, int start, int end)
+
+/*
+** Places the ants in the paths of a given pass. 
+*/
+
+int		*pass_value(int ants, t_names **arr, int start, int end)
 {
     int mod;
     int j;
 	int	tmp_ants;
-	int	steps;
+	int	*steps;
 
     
 	tmp_ants = ants;
     j = start;
     mod = 0;
+    if (!(steps = (int *)malloc(sizeof(int) * 3)))
+        return (0); // MALLOC ERROR!!
+    steps[0] = start;
 	while (j + 1 < end)
 	{
 		tmp_ants = tmp_ants - ((arr[j + 1]->len - arr[j]->len) * (j - start + 1));
@@ -74,30 +82,38 @@ int		pass_value(int ants, t_names **arr, int start, int end)
 	}
     if (tmp_ants > 0)
 	    mod = tmp_ants % (j - start + 1);
-	steps = (tmp_ants / (j - start + 1)) + arr[j]->len;
+	steps[2] = (tmp_ants / (j - start + 1)) + arr[j]->len;
 	if (mod > 0)
-		steps++;
+    {
+//        if ((j - start + 1) >= mod)
+            j--;
+		steps[2]++;
+    }
+    steps[1] = j;
 	return (steps);
 }
 
-int		path_select(t_lem *lem, int *pass, t_names **arr)
+int		*path_select(t_lem *lem, int *pass, t_names **arr)
 {
-	int		value;
+	int		*value;
 	int		i;
-	int		ants;
-	int		j;
- //   int     best_value;//save best value
-//    int     best_j; //save best ending point --- from pass value function
-//    int     best_start;//save best starting point
+    int     *tmp;
 
 	i = -1;
-	j = 0;
-	ants = 0;
+    value = 0;
 	while (pass[++i + 1] > 0)
 	{
         pass_sort_paths_len(arr, pass[i], pass[i + 1]);
-		value = pass_value(lem->ants, arr, pass[i], pass[i + 1]);
-        ft_printf("value:%d\n", value);
+        tmp = pass_value(lem->ants, arr, pass[i], pass[i + 1]);
+        if (!value)
+            value = tmp;
+        else if (value[2] > tmp[2])
+        {
+            free(value);
+            value = tmp;
+        }
+        else if (tmp)
+            free(tmp);
 	}
-	return (j);
+	return (value);
 }

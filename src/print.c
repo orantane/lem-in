@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 15:03:20 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/16 20:46:56 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/19 17:40:26 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,62 @@ void	print_everything(t_room *room, t_lem *lem)
 	{
 		if (room->links[i]->lvl != room->lvl)
 			print_everything(room->links[i], lem);
+	}
+}
+t_names		**prepare_output(t_lem *lem, t_names **paths)
+{
+	t_names	**routes;
+	int		i;
+	int		j;
+
+	if (!(routes = (t_names**)malloc(sizeof(t_names *) * lem->ants + 1)))
+		exit(0); //MALLOC ERROR
+	routes[lem->ants] = NULL;
+	i = 0;
+	while (i < lem->ants)
+	{
+		j = lem->value[0];
+		while (j <= lem->value[1])
+		{
+			routes[i] = paths[j];
+			j++;
+			i++;
+		}
+	}
+	return (routes);
+}
+
+void	print_output(t_lem *lem, t_names **paths)
+{
+	t_names	**routes;
+	int		i;
+	int		j;
+	int		print;
+	int		loop;
+
+	i = 0;
+	j = 1;
+	loop = 1;
+	routes = prepare_output(lem, paths);
+	while (loop)
+	{
+		loop = 0;
+		print = j + (lem->value[1] - lem->value[0]);
+		if (print > lem->ants)
+			print = lem->ants;
+		j = -1;
+		while(++j < print && print)
+		{
+			if (routes[j] != NULL)
+				ft_printf("L%d-%s ", (j + 1), routes[j]->room->name);
+			if (routes[j] != NULL)
+			{
+				routes[j] = routes[j]->next;
+				loop = 1;
+			}
+		}
+		j++;
+		if (loop)
+			ft_putchar('\n');
 	}
 }

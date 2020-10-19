@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 18:07:40 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/16 20:55:21 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/19 17:46:54 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ t_names     **make_path_array(t_lem *lem, t_room *start)
         }
         i++;
 	}
-    path_select(lem, pass, arr);
-   print_path_array(arr, pass); //only for checking, remove!
+    print_path_array(arr, pass); //only for checking, remove!
+    lem->value = path_select(lem, pass, arr);
     return (arr);
 }

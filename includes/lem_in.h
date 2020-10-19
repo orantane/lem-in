@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:33:49 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/16 20:05:50 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/19 17:04:43 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include "get_next_line.h"
 # include "ft_printf.h"
 # define MAX_PATHS 3
-# define ROUNDS 10
+# define ROUNDS 100
 
 typedef struct		s_room
 {
@@ -53,6 +53,7 @@ typedef struct		s_lem
 	int				lvl;
 	int				s_bneck;
 	int				e_bneck;
+	int				*value;
 	t_names			*que;
 	t_names			*read;
 	t_list			*links;
@@ -62,6 +63,7 @@ typedef struct		s_lem
 }					t_lem;
 
 t_list    			*save_info(int fd);
+t_list				*ants_amount(t_list *list, t_lem *lem);
 t_room				*new_room_node(char *content, int se);
 t_names				*new_names_node(t_room *room, t_room *origin);
 char				*strcpy_space(char *str);
@@ -88,9 +90,11 @@ void        		init_next_pass(int start, int end, t_names **arr, t_room *r_end);
 int					check_all_avoids(t_names *path, t_room *end);
 int					max_flow_pass(int *pass, int i);
 void    			pass_sort_paths_len(t_names **arr, int start, int end);
-int					path_select(t_lem *lem, int *pass, t_names **arr);
-int					pass_value(int ants, t_names **arr, int start, int end);
+int					*path_select(t_lem *lem, int *pass, t_names **arr);
+int					*pass_value(int ants, t_names **arr, int start, int end);
 int					max_flow_pass(int *pass, int i);
+t_names				**prepare_output(t_lem *lem, t_names **paths);
+void				print_output(t_lem *lem, t_names **paths);
 
 void    			print_path_array(t_names **arr, int *rounds); //remove
 void				print_everything(t_room *room, t_lem *lem); //remove
