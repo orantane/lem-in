@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 18:34:38 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/19 19:49:28 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/19 20:35:30 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,8 @@ int		*pass_value(int ants, t_names **arr, int start, int end)
 	steps[2] = (tmp_ants / (j - start + 1)) + arr[j]->len;
 	if (mod > 0)
     {
-//        if ((j - start + 1) >= mod)
-            j--;
+        // if (steps[2] <= arr[j]->len) // this if clause doesn't work properly
+        //     j--;
 		steps[2]++;
     }
     steps[1] = j;
