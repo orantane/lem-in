@@ -1,46 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print.c                                            :+:      :+:    :+:   */
+/*   print2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 15:03:20 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/20 17:05:18 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/20 19:48:16 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-
-/*void	print_ants_mov(t_names **arr, int start, int end, t_lem *lem)
-{
-	int		i;
-	int		j;
-	int		ants;
-	int		flow;
-	t_names	*cur[end - start];
-
-	flow = end - start;
-	i = start;
-	while (ants < lem->ants)
-	{
-		j = 0;
-		while (j < flow)
-		{
-			cur[j] = arr[i];
-			ants = j + 1;
-			ft_printf("L%d-%s ", ants, cur[j]->room->name);
-			j++;
-			i++;
-		}
-	}
-
-
-L1-1 L2-2
-L1-4 L3-1 L2-3
-L3-4 L2-4
-} */
-
 
 void    print_path_array(t_names **arr, int *pass)
 {
@@ -70,39 +40,30 @@ void    print_path_array(t_names **arr, int *pass)
     }
 }
 
-void	print_everything(t_room *room, t_lem *lem)
-{
-	int	i;
-
-	i = -1;
-	if (!room)
-		return ;
-	if (!(ft_strcmp(room->name, lem->end)))
-		return ;
-	while (room->links && room->links[++i])
-		printf("Room '%s' is on lvl '%d' and linked to room '%s'.\n", \
-			room->name, room->lvl, room->links[i]->name);
-	i = -1;
-	while (room->links && room->links[++i])
-	{
-		if (room->links[i]->lvl != room->lvl)
-			print_everything(room->links[i], lem);
-	}
-}
 t_names		**prepare_output(t_lem *lem, t_names **paths)
 {
 	t_names	**routes;
 	int		i;
 	int		j;
+	int		tmp_ants;
+	int		*tmp_value;
 
 	if (!(routes = (t_names**)malloc(sizeof(t_names *) * lem->ants + 1)))
 		exit(0); //MALLOC ERROR
 	routes[lem->ants] = NULL;
+	i = -1;
+	tmp_ants = lem->ants;
+	if (!(tmp_value = (int *)malloc(sizeof(int) * 3))) // This is not free'd at any point.
+        return (0); // MALLOC ERROR!!
+	while (++i < 3)
+		tmp_value[i] = lem->value[i];
 	i = 0;
 	while (i < lem->ants)
 	{
-		j = lem->value[0];
-		while (j <= lem->value[1])
+		tmp_value = pass_value(tmp_ants, paths, tmp_value[0], tmp_value[1]++);
+		tmp_ants = tmp_ants - (tmp_value[1] - tmp_value[0] + 1);
+		j = tmp_value[0];
+		while (j <= tmp_value[1])
 		{
 			routes[i] = paths[j];
 			j++;
@@ -127,9 +88,11 @@ void	print_output(t_lem *lem, t_names **paths)
 	while (loop)
 	{
 		loop = 0;
+		lem->value = pass_value(lem->ants, paths, lem->value[0], lem->value[1]++);
+		lem->ants = lem->ants - (lem->value[1] - lem->value[0] + 1);
 		print = j + (lem->value[1] - lem->value[0]);
-		if (print > lem->ants)
-			print = lem->ants;
+		// if (print > lem->ants)
+		// 	print = lem->ants;
 		j = -1;
 		while(++j < print && print)
 		{

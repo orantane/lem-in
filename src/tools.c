@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:29:37 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/19 15:41:04 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/20 15:50:03 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ t_list		*ants_amount(t_list *list, t_lem *lem)
 		if (!ft_isdigit(str[0]))
 			exit(0); //error wrong format
 		lem->ants = ft_atoi(list->content);
+		if (lem->ants == 0)
+			exit(0); //ERROR NO ANTS
 		break;
 	}
 	return (list->next);

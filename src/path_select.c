@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 18:34:38 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/19 20:35:30 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/20 19:55:03 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void    pass_sort_paths_len(t_names **arr, int start, int end)
         j = i + 1;
         while (j < end)
         {
-            if (arr[j]->len < arr[i]->len)
+            if (arr[j] && arr[j]->len < arr[i]->len)
             {
                 tmp = arr[j];
                 tmp2 = arr[i];
@@ -43,21 +43,6 @@ void    pass_sort_paths_len(t_names **arr, int start, int end)
     }
 }
 
-/*
-int		max_flow_pass(int *pass, int i)
-{
-	int		flow;
-
-    flow = 0;
-	if (pass[i + 1] > pass[i])
-        flow = pass[i + 1] - pass[i];
-	return (flow);
-}
-*/
-
-/*
-** Places the ants in the paths of a given pass. 
-*/
 
 int		*pass_value(int ants, t_names **arr, int start, int end)
 {
@@ -72,6 +57,7 @@ int		*pass_value(int ants, t_names **arr, int start, int end)
     mod = 0;
     if (!(steps = (int *)malloc(sizeof(int) * 3)))
         return (0); // MALLOC ERROR!!
+    steps[2] = 0;
     steps[0] = start;
 	while (j + 1 < end)
 	{
@@ -85,8 +71,9 @@ int		*pass_value(int ants, t_names **arr, int start, int end)
 	steps[2] = (tmp_ants / (j - start + 1)) + arr[j]->len;
 	if (mod > 0)
     {
-        // if (steps[2] <= arr[j]->len) // this if clause doesn't work properly
-        //     j--;
+//        while (mod < (j - start + 1) && (j - 1) > 0 && steps[2] <= arr[j]->len)
+//            j--;
+//        steps[2] = (tmp_ants / (j - start + 1)) + arr[j]->len;
 		steps[2]++;
     }
     steps[1] = j;
@@ -103,13 +90,13 @@ int		*path_select(t_lem *lem, int *pass, t_names **arr)
     value = 0;
 	while (pass[++i + 1] > 0)
 	{
-        pass_sort_paths_len(arr, pass[i], pass[i + 1]);
         if (!arr[pass[i]])
             break ;
+        pass_sort_paths_len(arr, pass[i], pass[i + 1]);
         tmp = pass_value(lem->ants, arr, pass[i], pass[i + 1]);
         if (!value)
             value = tmp;
-        else if (value[2] > tmp[2])
+        else if (value[2] > tmp[2]) // If we change this to be '>=' we will end up saving a later version of the paths with the same value.
         {
             free(value);
             value = tmp;

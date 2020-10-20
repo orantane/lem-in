@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   path.c                                             :+:      :+:    :+:   */
+/*   path2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 18:07:40 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/20 18:10:11 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/20 18:14:18 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,9 @@ void        init_next_pass(int start, int end, t_names **arr, t_room *r_end)
 {
     int     i;
     t_names *cur;
+    int     check;
 
+    check = 0;
     i = start;
     while (i < end)
     {
@@ -102,8 +104,11 @@ void        init_next_pass(int start, int end, t_names **arr, t_room *r_end)
         while (cur)
         {
             cur->room->vis = 0;
-            if (cur->room != r_end)
-                cur->room->avoid = 1;
+           if (check == 0 && cur->room != r_end && !cur->room->avoid)
+           {
+               cur->room->avoid = 1;
+               check = 1;
+           }
             cur = cur->next;
         }
         i++;
@@ -145,7 +150,7 @@ t_names     **make_path_array(t_lem *lem, t_room *start)
         }
         i++;
 	}
-   print_path_array(arr, pass); //only for checking, remove!
+    print_path_array(arr, pass); //only for checking, remove!
     lem->value = path_select(lem, pass, arr);
     return (arr);
 }

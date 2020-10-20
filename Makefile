@@ -6,20 +6,20 @@
 #    By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 14:58:42 by ksalmi            #+#    #+#              #
-#    Updated: 2020/10/19 19:52:19 by ksalmi           ###   ########.fr        #
+#    Updated: 2020/10/20 19:49:16 by ksalmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = lem-in
 
-SRC_NAME = main.c \
+SRC_NAME = only_debuggin_main.c \
 save_info.c \
 nodes.c \
 links.c \
 names.c \
 tools.c \
 path.c \
-print.c \
+print2.c \
 path_select.c \
 
 SRC_DIR = src/
