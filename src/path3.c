@@ -6,7 +6,7 @@
 /*   By: orantane <oskari.rantanen@student.hive.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 18:07:40 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/21 19:40:56 by orantane         ###   ########.fr       */
+/*   Updated: 2020/10/21 20:18:23 by orantane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ t_names     *set_links_to_avoid(t_names *path)
     {
         i = 0;
         cur = origin->next;
-        while (i < origin->room->link_num)
-        {
+		while (i < origin->room->link_num)
+		{
             if (origin->room->links[i] == cur->room)
                 origin->room->avoid[i] = 1;
             i++;
