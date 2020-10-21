@@ -1,16 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   path2.c                                            :+:      :+:    :+:   */
+/*   path3.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: orantane <oskari.rantanen@student.hive.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 18:07:40 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/21 19:35:55 by orantane         ###   ########.fr       */
+/*   Updated: 2020/10/21 19:40:56 by orantane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+
+t_names     *set_links_to_avoid(t_names *path)
+{
+    t_names *cur;
+    t_names *origin;
+    int     i;
+
+    origin = path;
+    while (origin->next)
+    {
+        i = 0;
+        cur = origin->next;
+        while (i < origin->room->link_num)
+        {
+            if (origin->room->links[i] == cur->room)
+                origin->room->avoid[i] = 1;
+            i++;
+        }
+        i = 0;
+        while (i < cur->room->link_num)
+        {
+            if (cur->room->links[i] == origin->room)
+                cur->room->avoid[i] = 1;
+            i++;
+        }
+        origin = origin->next;
+    }
+    return (path);
+}
 
 t_names     *create_path(t_names *search, t_room *start)
 {
@@ -30,7 +59,7 @@ t_names     *create_path(t_names *search, t_room *start)
             path->room->origin = NULL;
             head->len = len + 1;
             free_names_list(search);
-            return (head);
+            return (set_links_to_avoid(head));
         }
         cur = search->next;
         if (cur && cur->room == path->room->origin)
@@ -116,7 +145,7 @@ t_names     *find_path(t_room *start)
     }
 }*/
 
-void        init_next_pass(int start, int end, t_names **arr, t_room *r_end)
+void        init_next_pass(int start, int end, t_names **arr)
 {
     int     i;
     t_names *cur;
@@ -128,8 +157,6 @@ void        init_next_pass(int start, int end, t_names **arr, t_room *r_end)
         while (cur)
         {
             cur->room->vis = 0;
-            if (cur->room != r_end)
-                cur->room->avoid = 1;
             cur = cur->next;
         }
         i++;
@@ -166,7 +193,7 @@ t_names     **make_path_array(t_lem *lem, t_room *start)
 		if (arr[i] == NULL)
         {
 			pass[round] = i;
-            init_next_pass(pass[round - 1], pass[round], arr, start->next);
+            init_next_pass(pass[round - 1], pass[round], arr);
             round++;
             continue ;
         }

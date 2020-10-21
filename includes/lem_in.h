@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: orantane <oskari.rantanen@student.hive.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:33:49 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/20 19:08:42 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/21 19:53:52 by orantane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # include "libft.h"
 # include "get_next_line.h"
 # include "ft_printf.h"
-# define MAX_PATHS 100
-# define ROUNDS 10
+# define MAX_PATHS 30
+# define ROUNDS 50
 
 typedef struct		s_room
 {
@@ -29,8 +29,7 @@ typedef struct		s_room
 	int				lnkd;
 	int				lvl;
 	int				vis;
-	int				unq;
-	int				avoid;
+	int				*avoid;
 	int				x;
 	int				y;
 	int				link_num;
@@ -51,6 +50,7 @@ typedef struct		s_lem
 {
 	int				ants;
 	int				lvl;
+	int				loop;
 	int				s_bneck;
 	int				e_bneck;
 	int				*value;
@@ -86,7 +86,7 @@ t_names     		*arr_to_list(t_room *room, int link_num, int avoid);
 t_names				**make_path_array(t_lem *lem, t_room *start);
 t_names    			*find_path(t_room *start);
 t_names     		*create_path(t_names *search, t_room *start);
-void        		init_next_pass(int start, int end, t_names **arr, t_room *r_end);
+void        		init_next_pass(int start, int end, t_names **arr);
 int					check_all_avoids(t_names *path, t_room *end);
 int					max_flow_pass(int *pass, int i);
 void    			pass_sort_paths_len(t_names **arr, int start, int end);
@@ -95,6 +95,7 @@ int					*pass_value(int ants, t_names **arr, int start, int end);
 int					max_flow_pass(int *pass, int i);
 t_names				**prepare_output(t_lem *lem, t_names **paths);
 void				print_output(t_lem *lem, t_names **paths);
+t_names     		*set_links_to_avoid(t_names *path);
 
 void    			print_path_array(t_names **arr, int *rounds); //remove
 void				print_everything(t_room *room, t_lem *lem); //remove

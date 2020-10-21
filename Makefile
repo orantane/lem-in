@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+         #
+#    By: orantane <oskari.rantanen@student.hive.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 14:58:42 by ksalmi            #+#    #+#              #
-#    Updated: 2020/10/20 19:49:16 by ksalmi           ###   ########.fr        #
+#    Updated: 2020/10/21 19:34:20 by orantane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ nodes.c \
 links.c \
 names.c \
 tools.c \
-path.c \
+path3.c \
 print2.c \
 path_select.c \
 

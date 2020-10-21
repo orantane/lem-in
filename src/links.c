@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   links.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: orantane <oskari.rantanen@student.hive.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 17:46:02 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/16 14:58:30 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/21 19:34:33 by orantane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void    links_to_room(t_room *cur, t_room *rooms, t_names *links)
 
 	if (!(cur->links = (t_room**)malloc(sizeof(t_room*) * (cur->link_num + 1))))
 		exit(0); //MALLOC ERROR
+	if (!(cur->avoid = (int*)malloc(sizeof(int) * (cur->link_num + 1))))
+		exit(0); //MALLOC ERROR
 	i = 0;
     while (rooms && i < cur->link_num)
     {
@@ -57,6 +59,7 @@ void    links_to_room(t_room *cur, t_room *rooms, t_names *links)
 			if (tmp->room == rooms)
 			{
 				cur->links[i] = rooms;
+				cur->avoid[i] = 0;
 				i++;
 			}
 			tmp = tmp->next;
@@ -64,6 +67,7 @@ void    links_to_room(t_room *cur, t_room *rooms, t_names *links)
 		rooms = rooms->next;
 	}
 	cur->links[i] = NULL;
+	cur->avoid[i] = -1;
 	cur->lnkd = 1;
 }
 

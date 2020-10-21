@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: orantane <oskari.rantanen@student.hive.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 15:03:20 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/20 19:48:16 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/21 19:34:46 by orantane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ t_names		**prepare_output(t_lem *lem, t_names **paths)
 	i = 0;
 	while (i < lem->ants)
 	{
-		tmp_value = pass_value(tmp_ants, paths, tmp_value[0], tmp_value[1]++);
+		tmp_value = pass_value(tmp_ants, paths, tmp_value[0], (tmp_value[1] + 1));
 		tmp_ants = tmp_ants - (tmp_value[1] - tmp_value[0] + 1);
 		j = tmp_value[0];
 		while (j <= tmp_value[1])
@@ -79,33 +79,34 @@ void	print_output(t_lem *lem, t_names **paths)
 	int		i;
 	int		j;
 	int		print;
-	int		loop;
+	int		tmp_ants;
 
 	i = 0;
 	j = 1;
-	loop = 1;
+	lem->loop = 1;
 	routes = prepare_output(lem, paths);
-	while (loop)
+	tmp_ants = lem->ants;
+	while (lem->loop)
 	{
-		loop = 0;
-		lem->value = pass_value(lem->ants, paths, lem->value[0], lem->value[1]++);
-		lem->ants = lem->ants - (lem->value[1] - lem->value[0] + 1);
+		lem->loop = 0;
+		lem->value = pass_value(lem->ants, paths, lem->value[0], (lem->value[1] + 1));
+		tmp_ants = tmp_ants - (lem->value[1] - lem->value[0] + 1);
 		print = j + (lem->value[1] - lem->value[0]);
-		// if (print > lem->ants)
-		// 	print = lem->ants;
+		if (print > lem->ants)
+		 	print = lem->ants;
 		j = -1;
-		while(++j < print && print)
+		while (print && ++j < print)
 		{
 			if (routes[j] != NULL)
 				ft_printf("L%d-%s ", (j + 1), routes[j]->room->name);
 			if (routes[j] != NULL)
 			{
 				routes[j] = routes[j]->next;
-				loop = 1;
+				if (routes[j] != NULL)
+					lem->loop = 1;
 			}
 		}
 		j++;
-		if (loop)
-			ft_putchar('\n');
+		ft_putchar('\n');
 	}
 }

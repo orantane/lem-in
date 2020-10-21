@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_select.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: orantane <oskari.rantanen@student.hive.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 18:34:38 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/20 19:55:03 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/21 17:50:51 by orantane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int		*pass_value(int ants, t_names **arr, int start, int end)
         return (0); // MALLOC ERROR!!
     steps[2] = 0;
     steps[0] = start;
-	while (j + 1 < end)
+	while (j + 1 < end && tmp_ants > 0)
 	{
 		tmp_ants = tmp_ants - ((arr[j + 1]->len - arr[j]->len) * (j - start + 1));
 		if (tmp_ants < 1)
@@ -71,8 +71,8 @@ int		*pass_value(int ants, t_names **arr, int start, int end)
 	steps[2] = (tmp_ants / (j - start + 1)) + arr[j]->len;
 	if (mod > 0)
     {
-//        while (mod < (j - start + 1) && (j - 1) > 0 && steps[2] <= arr[j]->len)
-//            j--;
+        while (mod < (j - start + 1) && (j - 1) > 0 && steps[2] <= arr[j]->len)
+            j--;
 //        steps[2] = (tmp_ants / (j - start + 1)) + arr[j]->len;
 		steps[2]++;
     }
@@ -88,7 +88,7 @@ int		*path_select(t_lem *lem, int *pass, t_names **arr)
 
 	i = -1;
     value = 0;
-	while (pass[++i + 1] > 0)
+	while (pass[++i + 1] > -1)
 	{
         if (!arr[pass[i]])
             break ;

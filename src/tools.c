@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: orantane <oskari.rantanen@student.hive.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:29:37 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/20 15:50:03 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/21 19:34:28 by orantane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_names     *arr_to_list(t_room *room, int link_num, int avoid)
     i = 0;
 	while (room->links[i] && i < link_num)
     {
-		if (room->links[i]->origin != NULL || room->links[i]->avoid == avoid || \
+		if (room->links[i]->origin != NULL || room->avoid[i] == avoid || \
 			 room->links[i]->vis == 1)
 		{
 			i++;
