@@ -47,9 +47,9 @@ void    links_to_room(t_room *cur, t_room *rooms, t_names *links)
 	int		i;
 
 	if (!(cur->links = (t_room**)malloc(sizeof(t_room*) * (cur->link_num + 1))))
-		exit(0); //MALLOC ERROR
+		print_error(strerror(errno));
 	if (!(cur->avoid = (int*)malloc(sizeof(int) * (cur->link_num + 1))))
-		exit(0); //MALLOC ERROR
+		print_error(strerror(errno));
 	i = 0;
     while (rooms && i < cur->link_num)
     {
@@ -100,7 +100,7 @@ t_names     *find_links_to_room(t_room *room, t_list *list, t_room *all, t_lem *
                 if (cur != all && strequ_newline(cur->name, tmp))
                 {
                     if(!(links = (t_names*)malloc(sizeof(t_names))))
-						return (NULL); //MALLOC ERROR
+						print_error(strerror(errno));
 					links->room = cur;
 					links->origin = room;
 					links->next = NULL;

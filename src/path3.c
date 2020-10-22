@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path3.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: orantane <orantane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 18:07:40 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/22 15:36:46 by orantane         ###   ########.fr       */
+/*   Updated: 2020/10/22 21:12:12 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,37 @@ t_names     *set_links_to_avoid(t_names *path)
 		{
             if (origin->room->links[i] == cur->room)
             {
-                j = -1;
-                while (++j < cur->room->link_num)
-                {
-                    if (cur->room->links[j] == origin->room && cur->room->avoid[j] > 0)
-                    {
-                        origin->room->avoid[i] = 2;
-                        cur->room->avoid[j] = 2;
-                    }
-                }
-                origin->room->avoid[i] += 1;
+                // j = -1;
+                // while (++j < cur->room->link_num)
+                // {
+                //     if (cur->room->links[j] == origin->room && cur->room->avoid[j] > 0)
+                //     {
+                //         origin->room->avoid[i] = 2;
+                //         cur->room->avoid[j] = 2;
+                //     }
+                origin->room->avoid[i] = 1;
+                break ;
             }
             i++;
         }
+        j = 0;
+        while (j < cur->room->link_num)
+        {
+            if (cur->room->links[j] == origin->room)
+            {
+                cur->room->avoid[j] = 1;
+                break ;
+            }
+            j++;
+        }
+/*                if (!origin->room->avoid[i])
+                {
+                    origin->room->avoid[i] += 1;
+                    return (path);
+                }*/
+                // if (origin->room->avoid[i] == 0)
+                //     origin->room->avoid[i] = 1;
+            //i++;
         origin = origin->next;
     }
     return (path);
@@ -184,7 +202,7 @@ t_names     **make_path_array(t_lem *lem, t_room *start)
     round = 1;
 	max = lem->s_bneck * MAX_PATHS;
     if (!(arr = (t_names **)malloc(sizeof(t_names *) * max + 1)))
-        return (NULL); //Malloc error
+        print_error(strerror(errno));
     init_arr_null(max, arr);
     while (i < max && round < ROUNDS /* No more paths available! */)
 	{

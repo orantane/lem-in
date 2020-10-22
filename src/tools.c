@@ -75,7 +75,7 @@ t_names     *arr_to_list(t_room *room, int link_num, int avoid)
 			continue ;
 		}
 		if (!(new = (t_names *)malloc(sizeof(t_names))))
-			return (NULL); //MALLOC ERROR
+			print_error(strerror(errno));
 		new->room = room->links[i];
 		if (new->room->origin == NULL)
 			new->room->origin = room;
@@ -141,7 +141,7 @@ char	*strcpy_space(char *str)
 	while (str[i] != ' ' && str[i] != '\0')
 		i++;
 	if (!(new = (char *)malloc(sizeof(char) * i + 1)))
-		return (NULL);
+		print_error(strerror(errno));
 	i = 0;
 	while (str[i] != ' ')
 	{

@@ -18,8 +18,8 @@
 # include "libft.h"
 # include "get_next_line.h"
 # include "ft_printf.h"
-# define MAX_PATHS 10
-# define ROUNDS 20
+# define MAX_PATHS 8
+# define ROUNDS 15
 
 typedef struct		s_room
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: orantane <orantane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 18:07:40 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/22 15:11:51 by orantane         ###   ########.fr       */
+/*   Updated: 2020/10/22 21:18:07 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ t_names     **make_path_array(t_lem *lem, t_room *start)
         }
         i++;
 	}
-   //print_path_array(arr, pass); //only for checking, remove!
+   print_path_array(arr, pass); //only for checking, remove!
     lem->value = path_select(lem, pass, arr);
     return (arr);
 }

@@ -8,9 +8,10 @@ REQ_RESULTS=0
 OWN_RESULTS=0
 ARG=$1
 i=1
-while [ $i -le 20 ]
+while [ $i -le 100 ]
 do
 	./generator --$ARG > argFILE
+	#TIME=$(time ./lem-in < argFILE > outFILE | awk '{print $6}'n | sed 's/.$//')
 	./lem-in < argFILE > outFILE
 	OUTNUM=$(wc -l "outFILE" | awk '{print $1}')
 	ARGNUM=$(wc -l "argFILE" | awk '{print $1}')
@@ -20,11 +21,16 @@ do
 	OWN_RESULTS=$(( $OWN_RESULTS + $LINES_NUM ))
 	echo "req $REQ"
 	echo "own $LINES_NUM"
-	if (( $LINES_NUM > $REQ + 20 ))
-	then
-		cp -rf outFILE outProblem
-		cp -rf argFILE inProblem
-	fi
+	echo $TIME
+	#if ($TIME > 3.00)
+	#then
+		#echo "$TIME s"
+	#fi
+	#if (( $LINES_NUM > $REQ + 20 ))
+	#then
+		#cp -rf outFILE outProblem
+		#cp -rf argFILE inProblem
+	#fi
 	rm -rf outFILE
 	rm -rf argFILE
 	i=$(( $i + 1 ))

@@ -14,6 +14,8 @@ int		main(int argc, char **argv)
 	if (argc > 1)
 	{
 		fd = open(argv[1], O_RDONLY);
+		if (fd == -1)
+			print_error(strerror(errno));
 		list = save_info(fd);
 		head = list;
 		head = check_errors(list, &lem);

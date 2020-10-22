@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_select.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: orantane <orantane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 18:34:38 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/22 16:33:04 by orantane         ###   ########.fr       */
+/*   Updated: 2020/10/22 21:19:13 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ int		*pass_value(int ants, t_names **arr, int start, int end)
         while (mod < (j - start + 1) && (j - 1) > 0 && steps[2] <= arr[j]->len)
         {
             j--;
-            steps[2] = (tmp_ants / (j - start + 1)) + arr[j]->len;
         }
 		steps[2]++;
     }
