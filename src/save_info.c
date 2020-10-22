@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 16:42:55 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/15 18:24:45 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/22 17:27:42 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_list    *save_info(int fd)
     tail = NULL;
 	while ((get_next_line(fd, &line) == 1))
 	{
-		new = ft_lstnew(line, ft_strlen(line));
+		new = ft_lstnew(line, ft_strlen(line) + 1);
         if (head == NULL)
         {
             head = new;

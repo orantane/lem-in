@@ -19,7 +19,7 @@ int		main(int argc, char **argv)
 		head = check_errors(list, &lem);
 		while (list)		// Prints out the whole input.
 		{
-			ft_putstr(list->content);
+			ft_putendl((char*)list->content);
 			list = list->next;
 		}
 		ft_putchar('\n');

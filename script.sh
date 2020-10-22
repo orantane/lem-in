@@ -11,7 +11,7 @@ i=1
 while [ $i -le 20 ]
 do
 	./generator --$ARG > argFILE
-	./lem-in argFILE > outFILE
+	./lem-in < argFILE > outFILE
 	OUTNUM=$(wc -l "outFILE" | awk '{print $1}')
 	ARGNUM=$(wc -l "argFILE" | awk '{print $1}')
 	REQ=$(head -5 'argFILE' |  grep 'require' | awk '{print $8}')
@@ -20,7 +20,7 @@ do
 	OWN_RESULTS=$(( $OWN_RESULTS + $LINES_NUM ))
 	echo "req $REQ"
 	echo "own $LINES_NUM"
-	if (( $LINES_NUM < 0 ))
+	if (( $LINES_NUM > $REQ + 20 ))
 	then
 		cp -rf outFILE outProblem
 		cp -rf argFILE inProblem
@@ -30,7 +30,6 @@ do
 	i=$(( $i + 1 ))
 done
 i=$(( $i - 1))
-echo $i
 REQ_AVERAGE=$(( $REQ_RESULTS / $i))
 OWN_AVERAGE=$(( $OWN_RESULTS / $i))
 echo "Required average per $i tests: $REQ_AVERAGE"
