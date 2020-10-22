@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: orantane <oskari.rantanen@student.hive.    +#+  +:+       +#+        */
+/*   By: orantane <orantane@student.hive.fi>	    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:29:37 by orantane          #+#    #+#             */
 /*   Updated: 2020/10/21 19:34:28 by orantane         ###   ########.fr       */
@@ -12,12 +12,19 @@
 
 #include "lem_in.h"
 
+void		print_error(char *str)
+{
+	ft_printf("%s\n", str);
+	exit(0);
+}
+
 /*
 ** Finds and saves the number of ants into t_lem struct ignoring comment lines
-** and returning the list from where the room names should begin.
+** and returning the list from where the room names should begin. Also checks
+** the validity of this input.
 */
 
-t_list		*ants_amount(t_list *list, t_lem *lem)
+t_list		*check_errors(t_list *list, t_lem *lem)
 {
 	char	*str;
 
@@ -30,14 +37,17 @@ t_list		*ants_amount(t_list *list, t_lem *lem)
 			continue ;
 		}
 		if (!ft_isdigit(str[0]))
-			exit(0); //error wrong format
+			print_error("ERROR! Invalid format!");
 		lem->ants = ft_atoi(list->content);
 		if (lem->ants == 0)
-			exit(0); //ERROR NO ANTS
+			print_error("ERROR! No ants!");
 		break;
 	}
+	if (!list || list == NULL)
+		print_error(strerror(errno));
 	return (list->next);
 }
+
 
 /*
 ** Makes the rooms links-array into a t_names linked list.

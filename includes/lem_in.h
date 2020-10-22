@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: orantane <oskari.rantanen@student.hive.    +#+  +:+       +#+        */
+/*   By: orantane <orantane@student.hive.fi		    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:33:49 by orantane          #+#    #+#             */
 /*   Updated: 2020/10/21 19:53:52 by orantane         ###   ########.fr       */
@@ -14,12 +14,12 @@
 # define LEM_IN_H
 # include <stdlib.h>
 # include <fcntl.h>
-# include <stdio.h> // REMOVE BEFORE TURNING IN!
+# include <sys/errno.h>
 # include "libft.h"
 # include "get_next_line.h"
 # include "ft_printf.h"
-# define MAX_PATHS 30
-# define ROUNDS 50
+# define MAX_PATHS 10
+# define ROUNDS 20
 
 typedef struct		s_room
 {
@@ -63,7 +63,7 @@ typedef struct		s_lem
 }					t_lem;
 
 t_list    			*save_info(int fd);
-t_list				*ants_amount(t_list *list, t_lem *lem);
+t_list				*check_errors(t_list *list, t_lem *lem);
 t_room				*new_room_node(char *content, int se);
 t_names				*new_names_node(t_room *room, t_room *origin);
 char				*strcpy_space(char *str);
@@ -96,6 +96,7 @@ int					max_flow_pass(int *pass, int i);
 t_names				**prepare_output(t_lem *lem, t_names **paths);
 void				print_output(t_lem *lem, t_names **paths);
 t_names     		*set_links_to_avoid(t_names *path);
+void				print_error(char *str);
 
 void    			print_path_array(t_names **arr, int *rounds); //remove
 void				print_everything(t_room *room, t_lem *lem); //remove

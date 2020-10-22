@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path3.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: orantane <oskari.rantanen@student.hive.    +#+  +:+       +#+        */
+/*   By: orantane <orantane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 18:07:40 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/21 20:18:23 by orantane         ###   ########.fr       */
+/*   Updated: 2020/10/22 15:36:46 by orantane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ t_names     *set_links_to_avoid(t_names *path)
     t_names *cur;
     t_names *origin;
     int     i;
+    int     j;
 
     origin = path;
     while (origin->next)
@@ -26,14 +27,18 @@ t_names     *set_links_to_avoid(t_names *path)
 		while (i < origin->room->link_num)
 		{
             if (origin->room->links[i] == cur->room)
-                origin->room->avoid[i] = 1;
-            i++;
-        }
-        i = 0;
-        while (i < cur->room->link_num)
-        {
-            if (cur->room->links[i] == origin->room)
-                cur->room->avoid[i] = 1;
+            {
+                j = -1;
+                while (++j < cur->room->link_num)
+                {
+                    if (cur->room->links[j] == origin->room && cur->room->avoid[j] > 0)
+                    {
+                        origin->room->avoid[i] = 2;
+                        cur->room->avoid[j] = 2;
+                    }
+                }
+                origin->room->avoid[i] += 1;
+            }
             i++;
         }
         origin = origin->next;
@@ -199,7 +204,7 @@ t_names     **make_path_array(t_lem *lem, t_room *start)
         }
         i++;
 	}
-   //print_path_array(arr, pass); //only for checking, remove!
+    //print_path_array(arr, pass); //only for checking, remove!
     lem->value = path_select(lem, pass, arr);
     return (arr);
 }

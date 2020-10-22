@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   print2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: orantane <oskari.rantanen@student.hive.    +#+  +:+       +#+        */
+/*   By: orantane <orantane@student.hive.fi>	    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 15:03:20 by ksalmi            #+#    #+#             */
 /*   Updated: 2020/10/21 19:34:46 by orantane         ###   ########.fr       */
@@ -49,12 +49,12 @@ t_names		**prepare_output(t_lem *lem, t_names **paths)
 	int		*tmp_value;
 
 	if (!(routes = (t_names**)malloc(sizeof(t_names *) * lem->ants + 1)))
-		exit(0); //MALLOC ERROR
+		print_error(strerror(errno));
 	routes[lem->ants] = NULL;
 	i = -1;
 	tmp_ants = lem->ants;
 	if (!(tmp_value = (int *)malloc(sizeof(int) * 3))) // This is not free'd at any point.
-        return (0); // MALLOC ERROR!!
+		print_error(strerror(errno));
 	while (++i < 3)
 		tmp_value[i] = lem->value[i];
 	i = 0;

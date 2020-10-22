@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_select.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: orantane <oskari.rantanen@student.hive.    +#+  +:+       +#+        */
+/*   By: orantane <orantane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 18:34:38 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/21 17:50:51 by orantane         ###   ########.fr       */
+/*   Updated: 2020/10/22 16:33:04 by orantane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int		*pass_value(int ants, t_names **arr, int start, int end)
     j = start;
     mod = 0;
     if (!(steps = (int *)malloc(sizeof(int) * 3)))
-        return (0); // MALLOC ERROR!!
+		print_error(strerror(errno));
     steps[2] = 0;
     steps[0] = start;
 	while (j + 1 < end && tmp_ants > 0)
@@ -72,8 +72,10 @@ int		*pass_value(int ants, t_names **arr, int start, int end)
 	if (mod > 0)
     {
         while (mod < (j - start + 1) && (j - 1) > 0 && steps[2] <= arr[j]->len)
+        {
             j--;
-//        steps[2] = (tmp_ants / (j - start + 1)) + arr[j]->len;
+            steps[2] = (tmp_ants / (j - start + 1)) + arr[j]->len;
+        }
 		steps[2]++;
     }
     steps[1] = j;
@@ -96,7 +98,7 @@ int		*path_select(t_lem *lem, int *pass, t_names **arr)
         tmp = pass_value(lem->ants, arr, pass[i], pass[i + 1]);
         if (!value)
             value = tmp;
-        else if (value[2] > tmp[2]) // If we change this to be '>=' we will end up saving a later version of the paths with the same value.
+        else if (value[2] > tmp[2])
         {
             free(value);
             value = tmp;

@@ -3,7 +3,7 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: orantane <oskari.rantanen@student.hive.    +#+  +:+       +#+         #
+#    By: orantane <orantane@student.hive.fi>	    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 14:58:42 by ksalmi            #+#    #+#              #
 #    Updated: 2020/10/21 19:34:20 by orantane         ###   ########.fr        #

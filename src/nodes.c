@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nodes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: orantane <orantane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 14:54:47 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/16 20:06:55 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/22 16:23:04 by orantane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ t_names		*new_names_node(t_room *room, t_room *origin)
 	t_names	*node;
 
     if (!(node = (t_names *)malloc(sizeof(t_names))))
-        return (NULL); //MALLOC ERROR
+		print_error(strerror(errno));
 	node->room = room;
 	node->origin = origin;
 	node->next = NULL;

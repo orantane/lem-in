@@ -16,13 +16,13 @@ int		main(int argc, char **argv)
 		fd = open(argv[1], O_RDONLY);
 		list = save_info(fd);
 		head = list;
-		// while (list)		// Prints out the whole input.
-		// {
-		// 	ft_printf("%s", list->content);
-		// 	list = list->next;
-		// }
-		//ft_putchar('\n');
-		head = ants_amount(head, &lem);		// Saves the amount of ants.
+		head = check_errors(list, &lem);
+		while (list)		// Prints out the whole input.
+		{
+			ft_putstr(list->content);
+			list = list->next;
+		}
+		ft_putchar('\n');
 		room = room_names(head, &lem);	// Creates and initializes the big room structure.
 		// cur = room;
 		// while (cur)
