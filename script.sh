@@ -9,7 +9,7 @@ OWN_RESULTS=0
 ARG=$1
 slow=0
 i=0
-while [ $i -lt 100 ]
+while [ $i -lt 20 ]
 do
 	./generator --$ARG > argFILE
 	(time -p ./lem-in < argFILE > outFILE) &> "timeFILE"

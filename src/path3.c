@@ -281,10 +281,10 @@ t_names     **make_path_array(t_lem *lem, t_room *start)
         avoid_shortest_path(arr[pass[j]]->room, start);
     }
 
-    print_path_array(arr, pass); //only for checking, remove!
+    //print_path_array(arr, pass); //only for checking, remove!
     lem->value = path_select(lem, pass, arr);
-    ft_printf("selected start is: %d\n", lem->value[0]);
-    ft_printf("selected end is: %d\n", lem->value[1]);
-    ft_printf("selected value is: %d\n", lem->value[2]);
+    // ft_printf("selected start is: %d\n", lem->value[0]);
+    // ft_printf("selected end is: %d\n", lem->value[1]);
+    // ft_printf("selected value is: %d\n", lem->value[2]);
     return (arr);
 }

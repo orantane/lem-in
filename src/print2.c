@@ -91,10 +91,10 @@ void	print_output(t_lem *lem, t_names **paths)
 	while (lem->loop)
 	{
 		lem->loop = 0;
-		lem->value = pass_value(lem->ants, paths, lem->value[0], (lem->value[1]) + 1);
+		lem->value = pass_value(tmp_ants, paths, lem->value[0], (lem->value[1]) + 1);
 		tmp_ants = tmp_ants - (lem->value[1] - lem->value[0] + 1);
 		print = j + (lem->value[1] - lem->value[0] + 1);
-		ft_printf("Value[0]:%d, value[1]:%d, value[2]:%d, j:%d, print:%d\n", lem->value[0], lem->value[1], lem->value[2], j, print);
+		//ft_printf("Value[0]:%d, value[1]:%d, value[2]:%d, j:%d, print:%d\n", lem->value[0], lem->value[1], lem->value[2], j, print);
 		if (print > lem->ants)
 		 	print = lem->ants;
 		j = 0;
@@ -114,5 +114,5 @@ void	print_output(t_lem *lem, t_names **paths)
 		ft_putchar('\n');
 		lines++;
 	}
-	ft_printf("\nPRINTED LINES: %d\n", lines);
+	//ft_printf("\nPRINTED LINES: %d\n", lines);
 }
