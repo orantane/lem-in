@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 18:34:38 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/23 18:11:15 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/23 20:01:00 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void    pass_sort_paths_len(t_names **arr, int start, int end)
         i++;
     }
 }
-
 
 int		*pass_value(int ants, t_names **arr, int start, int end)
 {

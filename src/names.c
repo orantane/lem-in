@@ -19,31 +19,38 @@
 t_room   *room_names(t_list *list, t_lem *lem)
 {
 	t_room	*head;
-    t_room *room;
+    t_room	*room;
+	char	*str;
 
 	head = NULL;
     while (list)
     {
-		if (!ft_strncmp((char*)list->content, "##start", 7))
+		str = (char*)list->content;
+		if (ft_isdigit(str[0]) && !ft_strchr(str, ' ') && !ft_strchr(str, '-'))
+		{
+			list = list->next;
+			continue ;
+		}
+		if (!ft_strncmp(str, "##start", 7))
 		{
             list = list->next;
 			room = new_room_node((char*)list->content, 0);
             room_add(&head, room);
 			lem->start = ft_strdup(room->name);
 		}
-		else if (!ft_strncmp((char*)list->content, "##end", 5))
+		else if (!ft_strncmp(str, "##end", 5))
 		{
             list = list->next;
 			room = new_room_node((char*)list->content, 1);
 		    room_add(&head, room);
 			lem->end = ft_strdup(room->name);
 		}
-		else if (ft_strncmp((char*)list->content, "#", 1) && ft_strchr((char*)list->content, ' '))
+		else if (ft_strncmp(str, "#", 1) && ft_strchr(str, ' '))
 		{
-			room = new_room_node((char*)list->content, 2);
+			room = new_room_node(str, 2);
 		    room_add(&head, room);
 		}
-		else if (ft_strncmp(list->content, "#", 1) && !ft_strchr(list->content, ' '))
+		else if (ft_strncmp(str, "#", 1) && !ft_strchr(str, ' '))
 			break ;
         list = list->next;
     }

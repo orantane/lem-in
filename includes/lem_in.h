@@ -20,6 +20,7 @@
 # include "ft_printf.h"
 # define MAX_PATHS 15
 # define ROUNDS 50
+# define REQUIRED "#Here is the number of lines required: "
 
 typedef struct		s_room
 {
@@ -60,10 +61,12 @@ typedef struct		s_lem
 	char			*start;
 	char			*end;
 	char			*ptr;
+	int				required;
 }					t_lem;
 
+void				init_lem_struct(t_lem *lem);
 t_list    			*save_info(int fd);
-t_list				*check_errors(t_list *list, t_lem *lem);
+void				check_errors(t_list *list, t_lem *lem);
 t_room				*new_room_node(char *content, int se);
 t_names				*new_names_node(t_room *room, t_room *origin);
 char				*strcpy_space(char *str);

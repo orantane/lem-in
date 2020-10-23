@@ -12,42 +12,6 @@
 
 #include "lem_in.h"
 
-void		print_error(char *str)
-{
-	ft_printf("%s\n", str);
-	exit(0);
-}
-
-/*
-** Finds and saves the number of ants into t_lem struct ignoring comment lines
-** and returning the list from where the room names should begin. Also checks
-** the validity of this input.
-*/
-
-t_list		*check_errors(t_list *list, t_lem *lem)
-{
-	char	*str;
-
-	while (list)
-	{
-		str = (char*)list->content;
-		if (str[0] == '#')
-		{
-			list = list->next;
-			continue ;
-		}
-		if (!ft_isdigit(str[0]))
-			print_error("ERROR! Invalid format!");
-		lem->ants = ft_atoi(list->content);
-		if (lem->ants == 0)
-			print_error("ERROR! No ants!");
-		break;
-	}
-	if (!list || list == NULL)
-		print_error(strerror(errno));
-	return (list->next);
-}
-
 
 /*
 ** Makes the rooms links-array into a t_names linked list.
@@ -227,4 +191,21 @@ int		check_all_avoids(t_names *path, t_room *end)
 		return (1);
 	else
 		return (0);
+}
+
+void	init_lem_struct(t_lem *lem)
+{
+	lem->ants = 0;
+	lem->lvl = 0;
+	lem->loop = 0;
+	lem->s_bneck = 0;
+	lem->e_bneck = 0;
+	lem->value = NULL;
+	lem->que = NULL;
+	lem->read = NULL;
+	lem->links = NULL;
+	lem->start = NULL;
+	lem->end = NULL;
+	lem->ptr = NULL;
+	lem->required = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 16:58:32 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/22 17:31:06 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/23 21:39:33 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,12 @@ int		main()
 	t_lem   lem;
 	t_names	**paths;
 
+	init_lem_struct(&lem);
 	list = save_info(0);
+	if (!list || list == NULL)
+		print_error(strerror(errno));
+	check_errors(list, &lem);
 	head = list;
-	head = check_errors(list, &lem);
 	while (list)		// Prints out the whole input.
 	{
 		ft_putendl((char*)list->content);
