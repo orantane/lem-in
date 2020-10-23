@@ -80,22 +80,25 @@ void	print_output(t_lem *lem, t_names **paths)
 	int		j;
 	int		print;
 	int		tmp_ants;
+	int		lines;
 
+	lines = 0;
 	i = 0;
-	j = 1;
+	j = 0;
 	lem->loop = 1;
 	routes = prepare_output(lem, paths);
 	tmp_ants = lem->ants;
 	while (lem->loop)
 	{
 		lem->loop = 0;
-		lem->value = pass_value(lem->ants, paths, lem->value[0], (lem->value[1] + 1));
+		lem->value = pass_value(lem->ants, paths, lem->value[0], (lem->value[1]) + 1);
 		tmp_ants = tmp_ants - (lem->value[1] - lem->value[0] + 1);
-		print = j + (lem->value[1] - lem->value[0]);
+		print = j + (lem->value[1] - lem->value[0] + 1);
+		ft_printf("Value[0]:%d, value[1]:%d, value[2]:%d, j:%d, print:%d\n", lem->value[0], lem->value[1], lem->value[2], j, print);
 		if (print > lem->ants)
 		 	print = lem->ants;
-		j = -1;
-		while (print && ++j < print)
+		j = 0;
+		while (print && j < print)
 		{
 			if (routes[j] != NULL)
 				ft_printf("L%d-%s ", (j + 1), routes[j]->room->name);
@@ -105,8 +108,11 @@ void	print_output(t_lem *lem, t_names **paths)
 				if (routes[j] != NULL)
 					lem->loop = 1;
 			}
+			j++;
 		}
-		j++;
+		//j++;
 		ft_putchar('\n');
+		lines++;
 	}
+	ft_printf("\nPRINTED LINES: %d\n", lines);
 }

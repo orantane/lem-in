@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 18:34:38 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/22 21:19:13 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/23 18:11:15 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,9 @@ int		*pass_value(int ants, t_names **arr, int start, int end)
     steps[0] = start;
 	while (j + 1 < end && tmp_ants > 0)
 	{
-		tmp_ants = tmp_ants - ((arr[j + 1]->len - arr[j]->len) * (j - start + 1));
-		if (tmp_ants < 1)
+		if ((tmp_ants - ((arr[j + 1]->len - arr[j]->len) * (j - start + 1))) > 0)
+            tmp_ants = tmp_ants - ((arr[j + 1]->len - arr[j]->len) * (j - start + 1));
+		else
 			break ;
         j++;
 	}

@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 18:07:40 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/22 21:12:12 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/23 18:59:02 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_names     *set_links_to_avoid(t_names *path)
         cur = origin->next;
 		while (i < origin->room->link_num)
 		{
-            if (origin->room->links[i] == cur->room)
+            if (origin->room->links[i] == cur->room && cur->next)
             {
                 // j = -1;
                 // while (++j < cur->room->link_num)
@@ -186,11 +186,63 @@ void        init_next_pass(int start, int end, t_names **arr)
     }
 }
 
+void        avoid_shortest_path(t_room *short_path, t_room *start)
+{
+    int i;
+    static int  open;
+
+    i = -1;
+    while (++i < start->link_num)
+    {
+        if (start->links[open] == short_path)
+            open++;
+        if (i == open)
+            start->avoid[i] = 0;
+        else
+            start->avoid[i] = 1;
+        i++;
+        // if (start->links[i] == short_path)
+        // {
+        //     start->avoid[i] = 1;
+        //     break ;
+        // }
+    }
+    open++;
+}
+
+void    erase_avoids(int start, int end, t_names **arr)
+{
+    int     i;
+    int     j;
+    t_names *cur;
+
+    i = start;
+    if (end != -1)
+    {
+        while (i <= end)
+        {
+            cur = arr[i];
+            while (cur)
+            {
+                j = 0;
+                while (j < cur->room->link_num)
+                {
+                    cur->room->avoid[j] = 0;
+                    j++;
+                }
+                cur = cur->next;
+            }
+            i++;
+        }
+    }
+}
+
 t_names     **make_path_array(t_lem *lem, t_room *start)
 {
     t_names **arr;
 	int		max;
 	int		i;
+    int     j;
     int     pass[ROUNDS];
     int     round;
 
@@ -204,25 +256,35 @@ t_names     **make_path_array(t_lem *lem, t_room *start)
     if (!(arr = (t_names **)malloc(sizeof(t_names *) * max + 1)))
         print_error(strerror(errno));
     init_arr_null(max, arr);
-    while (i < max && round < ROUNDS /* No more paths available! */)
-	{
-		arr[i] = find_path(start);
-        /*if (arr[i] && check_all_avoids(arr[i], start->next))
+    while(i < max && round < ROUNDS)
+    {
+        j = round - 1;
+        while (round < (j + 3) && i < max && round < ROUNDS)
         {
-            free_names_list(arr[i]);
-            arr[i] = NULL;
-            break ;
-        } */
-		if (arr[i] == NULL)
-        {
-			pass[round] = i;
-            init_next_pass(pass[round - 1], pass[round], arr);
-            round++;
-            continue ;
+            arr[i] = find_path(start);
+            /*if (arr[i] && check_all_avoids(arr[i], start->next))
+            {
+                free_names_list(arr[i]);
+                arr[i] = NULL;
+                break ;
+            } */
+            if (arr[i] == NULL)
+            {
+                pass[round] = i;
+                init_next_pass(pass[round - 1], pass[round], arr);
+                round++;
+                continue ;
+            }
+            i++;
         }
-        i++;
-	}
-    //print_path_array(arr, pass); //only for checking, remove!
+        erase_avoids(pass[j], pass[round - 1], arr);
+        avoid_shortest_path(arr[pass[j]]->room, start);
+    }
+
+    print_path_array(arr, pass); //only for checking, remove!
     lem->value = path_select(lem, pass, arr);
+    ft_printf("selected start is: %d\n", lem->value[0]);
+    ft_printf("selected end is: %d\n", lem->value[1]);
+    ft_printf("selected value is: %d\n", lem->value[2]);
     return (arr);
 }

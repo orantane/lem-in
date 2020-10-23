@@ -18,8 +18,8 @@
 # include "libft.h"
 # include "get_next_line.h"
 # include "ft_printf.h"
-# define MAX_PATHS 8
-# define ROUNDS 15
+# define MAX_PATHS 15
+# define ROUNDS 50
 
 typedef struct		s_room
 {
@@ -96,6 +96,7 @@ int					max_flow_pass(int *pass, int i);
 t_names				**prepare_output(t_lem *lem, t_names **paths);
 void				print_output(t_lem *lem, t_names **paths);
 t_names     		*set_links_to_avoid(t_names *path);
+void        		avoid_shortest_path(t_room *short_path, t_room *start);
 void				print_error(char *str);
 
 void    			print_path_array(t_names **arr, int *rounds); //remove
