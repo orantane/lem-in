@@ -6,13 +6,13 @@
 #    By: orantane <orantane@student.hive.fi>	    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 14:58:42 by ksalmi            #+#    #+#              #
-#    Updated: 2020/10/21 19:34:20 by orantane         ###   ########.fr        #
+#    Updated: 2020/10/27 17:12:34 by ksalmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = lem-in
 
-SRC_NAME = only_debuggin_main.c \
+SRC_NAME = main.c \
 save_info.c \
 nodes.c \
 links.c \

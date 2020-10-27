@@ -9,7 +9,7 @@ OWN_RESULTS=0
 ARG=$1
 slow=0
 i=0
-while [ $i -lt 20 ]
+while [ $i -lt 50 ]
 do
 	./generator --$ARG > argFILE
 	(time -p ./lem-in < argFILE > outFILE) &> "timeFILE"
@@ -23,14 +23,14 @@ do
 	echo "req $REQ"
 	echo "own $LINES_NUM"
 	#echo "Execution time $TIME"
-	if (( $(echo "$TIME > 3.00" |bc -l) )); then
+	if (( $(echo "$TIME > 4.00" |bc -l) )); then
 		slow=$(( $slow + 1 ))
 	fi
-	#if (( $LINES_NUM > $REQ + 20 ))
-	#then
-		#cp -rf outFILE outProblem
-		#cp -rf argFILE inProblem
-	#fi
+	if (( $LINES_NUM > $REQ + 13 ))
+	then
+		cp -rf outFILE outProblem
+		cp -rf argFILE inProblem
+	fi
 	rm -rf timeFILE
 	rm -rf outFILE
 	rm -rf argFILE
@@ -40,5 +40,5 @@ REQ_AVERAGE=$(( $REQ_RESULTS / $i))
 OWN_AVERAGE=$(( $OWN_RESULTS / $i))
 echo "Required average per $i tests: $REQ_AVERAGE"
 echo "Our average per $i tests: $OWN_AVERAGE"
-echo "$slow times over 3.00s"
+echo "$slow times over 4.00s"
 exit 0

@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 18:07:40 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/23 18:59:02 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/27 18:58:20 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,29 +186,47 @@ void        init_next_pass(int start, int end, t_names **arr)
     }
 }
 
-void        avoid_shortest_path(t_room *short_path, t_room *start)
+// void        avoid_shortest_path(t_room *short_path, t_room *start)
+// {
+//     int i;
+//     static int open;
+
+//     i = -1;
+//     while (++i < start->link_num)
+//     {
+//         if (start->links[open] == short_path)
+//             open++;
+//         if (i == open)
+//             start->avoid[i] = 0;
+//         else
+//             start->avoid[i] = 1;
+//         i++;
+//         // if (start->links[i] == short_path)
+//         // {
+//         //     start->avoid[i] = 1;
+//         //     break ;
+//         // }
+//     } 
+//     open++;
+// }
+
+int        avoid_shortest_path(t_room *short_path, t_room *start)
 {
     int i;
-    static int  open;
 
-    i = -1;
-    while (++i < start->link_num)
+    i = 0;
+    while (i < start->link_num)
     {
-        if (start->links[open] == short_path)
-            open++;
-        if (i == open)
-            start->avoid[i] = 0;
-        else
+        if (start->links[i] == short_path)
+        {
             start->avoid[i] = 1;
+            break ;
+        }
         i++;
-        // if (start->links[i] == short_path)
-        // {
-        //     start->avoid[i] = 1;
-        //     break ;
-        // }
     }
-    open++;
+    return (i);
 }
+
 
 void    erase_avoids(int start, int end, t_names **arr)
 {
@@ -237,6 +255,12 @@ void    erase_avoids(int start, int end, t_names **arr)
     }
 }
 
+static int     return_shortest_path_to_use(t_room *start, int avoid_i)
+{
+    start->avoid[avoid_i] = 0;
+    return (-1);
+}
+
 t_names     **make_path_array(t_lem *lem, t_room *start)
 {
     t_names **arr;
@@ -245,6 +269,7 @@ t_names     **make_path_array(t_lem *lem, t_room *start)
     int     j;
     int     pass[ROUNDS];
     int     round;
+    int     avoid_i;
 
 	i = -1;
     while (++i < ROUNDS)
@@ -256,12 +281,18 @@ t_names     **make_path_array(t_lem *lem, t_room *start)
     if (!(arr = (t_names **)malloc(sizeof(t_names *) * max + 1)))
         print_error(strerror(errno));
     init_arr_null(max, arr);
+    avoid_i = -1;
     while(i < max && round < ROUNDS)
     {
         j = round - 1;
         while (round < (j + 3) && i < max && round < ROUNDS)
         {
             arr[i] = find_path(start);
+            if (avoid_i != -1)
+            {
+                //ft_printf("\navoid_i triggered and returned shortest path to use. i is +%d and round is:%d\n", i, round);
+                avoid_i = return_shortest_path_to_use(start, avoid_i);
+            }
             /*if (arr[i] && check_all_avoids(arr[i], start->next))
             {
                 free_names_list(arr[i]);
@@ -277,11 +308,18 @@ t_names     **make_path_array(t_lem *lem, t_room *start)
             }
             i++;
         }
+        lem->value = path_select(lem, pass, arr);
+        
+        if (lem->required + 6 >= lem->value[2])
+        {
+            //print_path_array(arr, pass); //only for checking, remove
+            return (arr);
+        }
         erase_avoids(pass[j], pass[round - 1], arr);
-        avoid_shortest_path(arr[pass[j]]->room, start);
+        avoid_i = avoid_shortest_path(arr[pass[j]]->room, start);
     }
 
-    //print_path_array(arr, pass); //only for checking, remove!
+    //print_path_array(arr, pass); //only for checking, remove
     lem->value = path_select(lem, pass, arr);
     // ft_printf("selected start is: %d\n", lem->value[0]);
     // ft_printf("selected end is: %d\n", lem->value[1]);
