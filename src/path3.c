@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 18:07:40 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/27 18:58:20 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/27 21:58:58 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,6 @@ t_names     *set_links_to_avoid(t_names *path)
 		{
             if (origin->room->links[i] == cur->room && cur->next)
             {
-                // j = -1;
-                // while (++j < cur->room->link_num)
-                // {
-                //     if (cur->room->links[j] == origin->room && cur->room->avoid[j] > 0)
-                //     {
-                //         origin->room->avoid[i] = 2;
-                //         cur->room->avoid[j] = 2;
-                //     }
                 origin->room->avoid[i] = 1;
                 break ;
             }
@@ -51,14 +43,6 @@ t_names     *set_links_to_avoid(t_names *path)
             }
             j++;
         }
-/*                if (!origin->room->avoid[i])
-                {
-                    origin->room->avoid[i] += 1;
-                    return (path);
-                }*/
-                // if (origin->room->avoid[i] == 0)
-                //     origin->room->avoid[i] = 1;
-            //i++;
         origin = origin->next;
     }
     return (path);
@@ -96,7 +80,7 @@ t_names     *create_path(t_names *search, t_room *start)
                 head->next->room->origin = NULL;
         }
         else
-            cur->room->origin = NULL; // Does not set all origins to NULL, needs to be fixed!!!
+            cur->room->origin = NULL;
         free(search);
         search = cur;
     }
@@ -143,31 +127,6 @@ t_names     *find_path(t_room *start)
     return (NULL);
 }
 
-/*void        init_next_pass(int start, int end, t_names **arr, t_room *r_end)
-{
-    int     i;
-    t_names *cur;
-    int     check;
-
-    check = 0;
-    i = start;
-    while (i < end)
-    {
-        cur = arr[i];
-        while (cur)
-        {
-            cur->room->vis = 0;
-           if (check == 0 && cur->room != r_end && !cur->room->avoid)
-           {
-               cur->room->avoid = 1;
-               check = 1;
-           }
-            cur = cur->next;
-        }
-        i++;
-    }
-}*/
-
 void        init_next_pass(int start, int end, t_names **arr)
 {
     int     i;
@@ -185,30 +144,6 @@ void        init_next_pass(int start, int end, t_names **arr)
         i++;
     }
 }
-
-// void        avoid_shortest_path(t_room *short_path, t_room *start)
-// {
-//     int i;
-//     static int open;
-
-//     i = -1;
-//     while (++i < start->link_num)
-//     {
-//         if (start->links[open] == short_path)
-//             open++;
-//         if (i == open)
-//             start->avoid[i] = 0;
-//         else
-//             start->avoid[i] = 1;
-//         i++;
-//         // if (start->links[i] == short_path)
-//         // {
-//         //     start->avoid[i] = 1;
-//         //     break ;
-//         // }
-//     } 
-//     open++;
-// }
 
 int        avoid_shortest_path(t_room *short_path, t_room *start)
 {
@@ -261,6 +196,12 @@ static int     return_shortest_path_to_use(t_room *start, int avoid_i)
     return (-1);
 }
 
+/*
+** Creates an array, which we use to store all the paths we find. Also creates
+** an array of int's which stores the index values for every search pass
+** we do, so we know what paths were found on which ever pass.
+*/
+
 t_names     **make_path_array(t_lem *lem, t_room *start)
 {
     t_names **arr;
@@ -289,16 +230,7 @@ t_names     **make_path_array(t_lem *lem, t_room *start)
         {
             arr[i] = find_path(start);
             if (avoid_i != -1)
-            {
-                //ft_printf("\navoid_i triggered and returned shortest path to use. i is +%d and round is:%d\n", i, round);
                 avoid_i = return_shortest_path_to_use(start, avoid_i);
-            }
-            /*if (arr[i] && check_all_avoids(arr[i], start->next))
-            {
-                free_names_list(arr[i]);
-                arr[i] = NULL;
-                break ;
-            } */
             if (arr[i] == NULL)
             {
                 pass[round] = i;
@@ -309,20 +241,12 @@ t_names     **make_path_array(t_lem *lem, t_room *start)
             i++;
         }
         lem->value = path_select(lem, pass, arr);
-        
         if (lem->required + 6 >= lem->value[2])
-        {
-            //print_path_array(arr, pass); //only for checking, remove
             return (arr);
-        }
+        free(lem->value);
         erase_avoids(pass[j], pass[round - 1], arr);
         avoid_i = avoid_shortest_path(arr[pass[j]]->room, start);
     }
-
-    //print_path_array(arr, pass); //only for checking, remove
     lem->value = path_select(lem, pass, arr);
-    // ft_printf("selected start is: %d\n", lem->value[0]);
-    // ft_printf("selected end is: %d\n", lem->value[1]);
-    // ft_printf("selected value is: %d\n", lem->value[2]);
     return (arr);
 }

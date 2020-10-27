@@ -12,6 +12,10 @@
 
 #include "lem_in.h"
 
+/*
+** Joins two linked lists together.
+*/
+
 t_names		*join_lists(t_names *new, t_names *old)
 {
 	t_names	*cur;
@@ -79,15 +83,13 @@ void    links_to_room(t_room *cur, t_room *rooms, t_names *links)
 ** that have a link from r_name.
 */
 
-t_names     *find_links_to_room(t_room *room, t_list *list, t_room *all, t_lem *lem)
+t_names     *find_links_to_room(t_room *room, t_list *list, t_room *all)
 {
     t_names *links;
     t_names	*head;
     t_room	*cur;
 	char	*tmp;
 
-	if (room->lvl == -1 || lem->lvl < room->lvl)
-		room->lvl = lem->lvl;
 //suojaa needle, jos on tyhja tai \n
     head = NULL;
     while (list)
@@ -129,9 +131,8 @@ void	build_link_tree(t_room *start, t_room *rooms, t_list *list, t_lem *lem)
 	t_names	*que;
 	t_names	*read;
 
-	lem->lvl = 0;
 	read = NULL;
-	links = find_links_to_room(start, list, rooms, lem);
+	links = find_links_to_room(start, list, rooms);
 	start->link_num = count_links(links);
 	lem->s_bneck = start->link_num;
 	read = links;
@@ -139,7 +140,6 @@ void	build_link_tree(t_room *start, t_room *rooms, t_list *list, t_lem *lem)
 	while (read != NULL)
 	{
 		que = NULL;
-        lem->lvl++;
 		while (read != NULL)
 		{
 			if (read->room->lnkd)
@@ -147,15 +147,14 @@ void	build_link_tree(t_room *start, t_room *rooms, t_list *list, t_lem *lem)
 				read = read->next;
 				continue ;
 			}
-			if (read->room != NULL && !(ft_strcmp(read->room->name, lem->end)))
+			if (read->room != NULL && read->room == start->next)
 			{
-				lem->e_bneck++;
 				tmp = read->next;
 				free(read);
 				read = tmp;
 				continue ;
 			}
-			links = find_links_to_room(read->room, list, rooms, lem);
+			links = find_links_to_room(read->room, list, rooms);
 			if (links)
 			{
 				read->room->link_num = count_links(links);

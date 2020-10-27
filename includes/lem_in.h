@@ -28,7 +28,6 @@ typedef struct		s_room
 	struct s_room	*origin;
 	int				se;
 	int				lnkd;
-	int				lvl;
 	int				vis;
 	int				*avoid;
 	int				x;
@@ -50,17 +49,16 @@ typedef struct		s_names
 typedef struct		s_lem
 {
 	int				ants;
-	int				lvl;
 	int				loop;
 	int				s_bneck;
-	int				e_bneck;
+	int				tmp_i;
+	int				tmp_j;
 	int				*value;
 	t_names			*que;
 	t_names			*read;
+	t_names			*tmp;
 	t_list			*links;
-	char			*start;
 	char			*end;
-	char			*ptr;
 	int				required;
 }					t_lem;
 
@@ -78,7 +76,7 @@ void				find_start_end(t_room *room);
 char   				*strstr_links(char *needle, char *haystack);
 void				links_to_room(t_room *cur, t_room *rooms, t_names *links);
 t_names     		*find_links_to_room(t_room *room, t_list *list, \
-						t_room *all, t_lem *lem);
+						t_room *all);
 void				build_link_tree(t_room *start, t_room *rooms, t_list *list,
 						t_lem *lem);
 t_names				*join_lists(t_names *new, t_names *old);
@@ -103,6 +101,5 @@ int	        		avoid_shortest_path(t_room *short_path, t_room *start);
 void				print_error(char *str);
 
 void    			print_path_array(t_names **arr, int *rounds); //remove
-void				print_everything(t_room *room, t_lem *lem); //remove
 
 #endif

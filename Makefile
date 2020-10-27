@@ -12,7 +12,7 @@
 
 NAME = lem-in
 
-SRC_NAME = main.c \
+SRC_NAME = only_debuggin_main.c \
 save_info.c \
 nodes.c \
 links.c \

@@ -12,33 +12,12 @@
 
 #include "lem_in.h"
 
-void    print_path_array(t_names **arr, int *pass)
-{
-    int     i;
-	int		j;
-	int		flow;
-    t_names *tmp;
-
-    i = 0;
-	j = 0;
-	flow = 0;
-    while (arr[i] && j < ROUNDS && (j == 0 || pass[j] != 0))
-    {
-		ft_printf("Round:%d, pass[j]=%d flow:%d\n", j, pass[j],  pass[j + 1] - pass[j]);
-		while (arr[i] && i < pass[j + 1])
-		{
-			tmp = arr[i];
-			while (tmp)
-			{
-				ft_printf("%s->", tmp->room->name);
-				tmp = tmp->next;
-			}
-			ft_printf("  |  %d is path len.\n", arr[i]->len);
-			i++;
-		}
-		j++;
-    }
-}
+/*
+** Creates an array of pointers to paths. Each pointer represents an ant.
+** So there are as many pointers as there are ants. Uses the pass_value
+** function to evaluate the paths for each ant. Returns the allocated
+** array to be printed.
+*/
 
 t_names		**prepare_output(t_lem *lem, t_names **paths)
 {
@@ -60,7 +39,10 @@ t_names		**prepare_output(t_lem *lem, t_names **paths)
 	i = 0;
 	while (i < lem->ants)
 	{
-		tmp_value = pass_value(tmp_ants, paths, tmp_value[0], (tmp_value[1] + 1));
+		lem->tmp_i = tmp_value[0];
+		lem->tmp_j = tmp_value[1];
+		free(tmp_value);
+		tmp_value = pass_value(tmp_ants, paths, lem->tmp_i, lem->tmp_j + 1);
 		tmp_ants = tmp_ants - (tmp_value[1] - tmp_value[0] + 1);
 		j = tmp_value[0];
 		while (j <= tmp_value[1])
@@ -73,6 +55,12 @@ t_names		**prepare_output(t_lem *lem, t_names **paths)
 	return (routes);
 }
 
+/*
+** Prints the result in the correct format. Uses the pass_value
+** function to dynamically adjust the amount printed per each
+** step.
+*/
+
 void	print_output(t_lem *lem, t_names **paths)
 {
 	t_names	**routes;
@@ -80,9 +68,7 @@ void	print_output(t_lem *lem, t_names **paths)
 	int		j;
 	int		print;
 	int		tmp_ants;
-	int		lines;
 
-	lines = 0;
 	i = 0;
 	j = 0;
 	lem->loop = 1;
@@ -91,10 +77,12 @@ void	print_output(t_lem *lem, t_names **paths)
 	while (lem->loop)
 	{
 		lem->loop = 0;
-		lem->value = pass_value(tmp_ants, paths, lem->value[0], (lem->value[1]) + 1);
+		lem->tmp_i = lem->value[0];
+		lem->tmp_j = lem->value[1];
+		free(lem->value);
+		lem->value = pass_value(tmp_ants, paths, lem->tmp_i, lem->tmp_j + 1);
 		tmp_ants = tmp_ants - (lem->value[1] - lem->value[0] + 1);
 		print = j + (lem->value[1] - lem->value[0] + 1);
-		//ft_printf("Value[0]:%d, value[1]:%d, value[2]:%d, j:%d, print:%d\n", lem->value[0], lem->value[1], lem->value[2], j, print);
 		if (print > lem->ants)
 		 	print = lem->ants;
 		j = 0;
@@ -110,9 +98,7 @@ void	print_output(t_lem *lem, t_names **paths)
 			}
 			j++;
 		}
-		//j++;
 		ft_putchar('\n');
-		lines++;
 	}
-	//ft_printf("\nPRINTED LINES: %d\n", lines);
+	free(routes);
 }

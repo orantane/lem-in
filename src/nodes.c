@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nodes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: orantane <orantane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 14:54:47 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/22 16:23:04 by orantane         ###   ########.fr       */
+/*   Updated: 2020/10/27 21:58:56 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ t_room	*new_room_node(char *content, int se)
 	new->origin = NULL;
 	new->lnkd = 0;
 	new->avoid = 0;
-	new->lvl = -1;
 	new->vis = 0;
 	new->next = NULL;
 	return (new);

@@ -13,7 +13,8 @@
 #include "lem_in.h"
 
 /*
-** This function creates a linked list of all the room room. 
+** This function creates a linked list of all the rooms, one link for each
+** room. "list" is the linked list that contains the input.
 */
 
 t_room   *room_names(t_list *list, t_lem *lem)
@@ -36,14 +37,12 @@ t_room   *room_names(t_list *list, t_lem *lem)
             list = list->next;
 			room = new_room_node((char*)list->content, 0);
             room_add(&head, room);
-			lem->start = ft_strdup(room->name);
 		}
 		else if (!ft_strncmp(str, "##end", 5))
 		{
             list = list->next;
 			room = new_room_node((char*)list->content, 1);
 		    room_add(&head, room);
-			lem->end = ft_strdup(room->name);
 		}
 		else if (ft_strncmp(str, "#", 1) && ft_strchr(str, ' '))
 		{
@@ -58,6 +57,10 @@ t_room   *room_names(t_list *list, t_lem *lem)
 	find_start_end(room);
 	return (head);
 }
+
+/*
+** Swaps the names of the two rooms, used to move rooms around.
+*/
 
 static void	names_content_swap(t_room *room, t_room *node, int position)
 {
@@ -74,6 +77,11 @@ static void	names_content_swap(t_room *room, t_room *node, int position)
 	room->name = str_tmp;
 	room->se = se_tmp;
 }
+
+/*
+** Finds the start and end rooms and puts them in the beginning of the
+** linked list (start->end->[rest of the rooms]).
+*/
 
 void	find_start_end(t_room *room)
 {

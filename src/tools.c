@@ -196,16 +196,11 @@ int		check_all_avoids(t_names *path, t_room *end)
 void	init_lem_struct(t_lem *lem)
 {
 	lem->ants = 0;
-	lem->lvl = 0;
 	lem->loop = 0;
 	lem->s_bneck = 0;
-	lem->e_bneck = 0;
 	lem->value = NULL;
 	lem->que = NULL;
 	lem->read = NULL;
 	lem->links = NULL;
-	lem->start = NULL;
-	lem->end = NULL;
-	lem->ptr = NULL;
 	lem->required = 0;
 }
