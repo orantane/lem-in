@@ -27,7 +27,7 @@ t_names		**prepare_output(t_lem *lem, t_names **paths)
 	int		tmp_ants;
 	int		*tmp_value;
 
-	if (!(routes = (t_names**)malloc(sizeof(t_names *) * lem->ants + 1)))
+	if (!(routes = (t_names**)malloc(sizeof(t_names *) * (lem->ants + 1))))
 		print_error(strerror(errno));
 	routes[lem->ants] = NULL;
 	i = -1;
@@ -52,6 +52,7 @@ t_names		**prepare_output(t_lem *lem, t_names **paths)
 			i++;
 		}
 	}
+	free(tmp_value);
 	return (routes);
 }
 
@@ -89,7 +90,7 @@ void	print_output(t_lem *lem, t_names **paths)
 		while (print && j < print)
 		{
 			if (routes[j] != NULL)
-				printf("L%d-%s ", (j + 1), routes[j]->room->name);
+				ft_printf("L%d-%s ", (j + 1), routes[j]->room->name);
 			if (routes[j] != NULL)
 			{
 				routes[j] = routes[j]->next;
@@ -100,5 +101,6 @@ void	print_output(t_lem *lem, t_names **paths)
 		}
 		ft_putchar('\n');
 	}
+	free(lem->value);
 	free(routes);
 }

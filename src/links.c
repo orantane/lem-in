@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   links.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: orantane <orantane@student.hive.fi		    +#+  +:+       +#+        */
+/*   By: orantane <orantane@student.hive.fi>	    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 17:46:02 by orantane          #+#    #+#             */
 /*   Updated: 2020/10/21 19:34:33 by orantane         ###   ########.fr       */
@@ -142,12 +142,7 @@ void	build_link_tree(t_room *start, t_room *rooms, t_list *list, t_lem *lem)
 		que = NULL;
 		while (read != NULL)
 		{
-			if (read->room->lnkd)
-			{
-				read = read->next;
-				continue ;
-			}
-			if (read->room != NULL && read->room == start->next)
+			if (read->room->lnkd || (read->room != NULL && read->room == start->next))
 			{
 				tmp = read->next;
 				free(read);

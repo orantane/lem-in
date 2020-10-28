@@ -104,7 +104,7 @@ char	*strcpy_space(char *str)
 	i = 0;
 	while (str[i] != ' ' && str[i] != '\0')
 		i++;
-	if (!(new = (char *)malloc(sizeof(char) * i + 1)))
+	if (!(new = (char *)malloc(sizeof(char) * (i + 1))))
 		print_error(strerror(errno));
 	i = 0;
 	while (str[i] != ' ')

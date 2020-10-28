@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 18:07:40 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/28 15:52:32 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/28 16:42:04 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_names     *set_links_to_avoid(t_names *path)
             i++;
         }
         j = 0;
-        while (j < cur->room->link_num)
+        while (cur->next && j < cur->room->link_num)
         {
             if (cur->room->links[j] == origin->room)
             {
@@ -175,7 +175,7 @@ void    erase_avoids(int start, int end, t_names **arr)
         while (i <= end)
         {
             cur = arr[i];
-            while (cur)
+            while (cur && cur->room)
             {
                 j = 0;
                 while (j < cur->room->link_num)

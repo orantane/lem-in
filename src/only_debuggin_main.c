@@ -40,6 +40,6 @@ int		main(int argc, char **argv)
 		paths = make_path_array(&lem, room);
 		print_output(&lem, paths);
 	}
-	//while(1) ;
+	while(1) ;
 	return (0);
 }
