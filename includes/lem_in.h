@@ -17,10 +17,12 @@
 # include <sys/errno.h>
 # include "libft.h"
 # include "get_next_line.h"
-# include "ft_printf.h"
+//# include "ft_printf.h"
 # define MAX_PATHS 15
 # define ROUNDS 10
 # define REQUIRED "#Here is the number of lines required: "
+
+#include <stdio.h>
 
 typedef struct		s_room
 {

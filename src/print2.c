@@ -89,7 +89,7 @@ void	print_output(t_lem *lem, t_names **paths)
 		while (print && j < print)
 		{
 			if (routes[j] != NULL)
-				ft_printf("L%d-%s ", (j + 1), routes[j]->room->name);
+				printf("L%d-%s ", (j + 1), routes[j]->room->name);
 			if (routes[j] != NULL)
 			{
 				routes[j] = routes[j]->next;

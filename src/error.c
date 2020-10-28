@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 22:00:30 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/23 22:01:02 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/28 15:57:48 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void		print_error(char *str)
 {
-	ft_printf("%s\n", str);
+	printf("%s\n", str);
 	exit(0);
 }
 
