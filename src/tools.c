@@ -12,7 +12,6 @@
 
 #include "lem_in.h"
 
-
 /*
 ** Makes the rooms links-array into a t_names linked list.
 ** After the first pass, avoids previously used rooms by using the
@@ -70,7 +69,6 @@ void	free_names_list(t_names *list)
 	}
 	list = NULL;
 }
-
 
 /*
 ** Counts the amount of nodes in a linked list.
@@ -147,60 +145,4 @@ char	*strstr_links(char *needle, char *haystack)
 		i++;
 	}
 	return (NULL);
-}
-
-/*
-** Sets the given pointer array to 0's.
-*/
-
-void	init_arr_null(int num, t_names **arr)
-{
-	int	i;
-
-	i = 0;
-	while (i < num)
-	{
-		arr[i] = NULL;
-		i++;
-	}
-	arr[i] = NULL;
-}
-
-int		strequ_newline(char *room, char *link)
-{
-	unsigned int	i;
-
-	i = 0;
-	while ((room[i] && link[i] && room[i] == link[i]))
-		i++;
-	if ((!room[i] && !link[i]) || (!room[i] && link[i] == '\n') || \
-		(!room[i] && link[i] == '-'))
-		return (1);
-	return (0);
-}
-
-int		check_all_avoids(t_names *path, t_room *end)
-{
-	while (path)
-	{
-		if (path->room->avoid == 0)
-			break;
-		path = path->next;
-	}
-	if (path->room == end)
-		return (1);
-	else
-		return (0);
-}
-
-void	init_lem_struct(t_lem *lem)
-{
-	lem->ants = 0;
-	lem->loop = 0;
-	lem->s_bneck = 0;
-	lem->value = NULL;
-	lem->que = NULL;
-	lem->read = NULL;
-	lem->links = NULL;
-	lem->required = 0;
 }

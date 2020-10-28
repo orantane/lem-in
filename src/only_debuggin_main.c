@@ -11,22 +11,18 @@ int		main(int argc, char **argv)
 	t_names	**paths;
 	
 	init_lem_struct(&lem);
-	if (argc > 1)
-	{
+	while (--argc > 1)
+		check_flags(&lem, argv[argc]);
+//	if (argc > 1)
+//	{
 		fd = open(argv[1], O_RDONLY);
 		if (fd == -1)
 			print_error(strerror(errno));
 		list = save_info(fd);
 		if (!list || list == NULL)
 			print_error(strerror(errno));
-		head = list;
 		check_errors(list, &lem);
-		while (list)		// Prints out the whole input.
-		{
-			ft_putendl((char*)list->content);
-			list = list->next;
-		}
-		ft_putchar('\n');
+		head = print_input_data(list, &lem);
 		room = room_names(head, &lem);	// Creates and initializes the big room structure.
 		// cur = room;
 		// while (cur)
@@ -34,12 +30,14 @@ int		main(int argc, char **argv)
 		// 	ft_printf("name: %s\n", cur->name);
 		// 	cur = cur->next;
 		// }
-		build_link_tree(room, room, lem.links, &lem);
+		build_link_tree(room, lem.links_begin, &lem);
 		//maybe make a check to see that all rooms have been linked and there are no "solitary" ones
 		//in this case, error invalid file?
 		paths = make_path_array(&lem, room);
 		print_output(&lem, paths);
-	}
-	while(1) ;
+		if (lem.flag_q == 1)
+			ft_printf("Output is %d steps.\n", lem.step_count);
+//	}
+	//while(1) ;
 	return (0);
 }

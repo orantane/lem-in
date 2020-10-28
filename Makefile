@@ -18,10 +18,13 @@ nodes.c \
 links.c \
 names.c \
 tools.c \
-path3.c \
-print2.c \
+tools2.c \
+path.c \
+print.c \
 path_select.c \
 error.c \
+avoid.c \
+build_link_tree.c \
 
 SRC_DIR = src/
 

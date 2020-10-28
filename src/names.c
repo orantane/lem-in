@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   room.c                                            :+:      :+:    :+:   */
+/*   names.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:38:19 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/06 19:32:52 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/28 19:51:29 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,52 +17,49 @@
 ** room. "list" is the linked list that contains the input.
 */
 
-t_room   *room_names(t_list *list, t_lem *lem)
+static t_room	*make_room_node_add_to_list(t_room *head, char *name, int se)
+{
+	t_room *room;
+
+	room = new_room_node(name, se);
+	room_add(&head, room);
+	return (head);
+}
+
+t_room			*room_names(t_list *list, t_lem *lem)
 {
 	t_room	*head;
-    t_room	*room;
-	char	*str;
 
 	head = NULL;
-    while (list)
-    {
-		str = (char*)list->content;
-		if (ft_isdigit(str[0]) && !ft_strchr(str, ' ') && !ft_strchr(str, '-'))
+	while (list)
+	{
+		if (!ft_strncmp((char*)list->content, "##start", 7))
 		{
 			list = list->next;
-			continue ;
+			head = make_room_node_add_to_list(head, (char*)list->content, 0);
 		}
-		if (!ft_strncmp(str, "##start", 7))
+		else if (!ft_strncmp((char*)list->content, "##end", 5))
 		{
-            list = list->next;
-			room = new_room_node((char*)list->content, 0);
-            room_add(&head, room);
+			list = list->next;
+			head = make_room_node_add_to_list(head, (char*)list->content, 1);
 		}
-		else if (!ft_strncmp(str, "##end", 5))
-		{
-            list = list->next;
-			room = new_room_node((char*)list->content, 1);
-		    room_add(&head, room);
-		}
-		else if (ft_strncmp(str, "#", 1) && ft_strchr(str, ' '))
-		{
-			room = new_room_node(str, 2);
-		    room_add(&head, room);
-		}
-		else if (ft_strncmp(str, "#", 1) && !ft_strchr(str, ' '))
+		else if (ft_strncmp((char*)list->content, "#", 1) &&
+			ft_strchr((char*)list->content, ' '))
+			head = make_room_node_add_to_list(head, (char*)list->content, 2);
+		else if (ft_strncmp((char*)list->content, "#", 1) &&
+			!ft_strchr((char*)list->content, ' '))
 			break ;
-        list = list->next;
-    }
-	lem->links = list;
-	find_start_end(room);
-	return (head);
+		list = list->next;
+	}
+	lem->links_begin = list;
+	return (find_start_end(head));
 }
 
 /*
 ** Swaps the names of the two rooms, used to move rooms around.
 */
 
-static void	names_content_swap(t_room *room, t_room *node, int position)
+static void		names_content_swap(t_room *room, t_room *node, int position)
 {
 	char	*str_tmp;
 	int		se_tmp;
@@ -83,10 +80,12 @@ static void	names_content_swap(t_room *room, t_room *node, int position)
 ** linked list (start->end->[rest of the rooms]).
 */
 
-void	find_start_end(t_room *room)
+t_room			*find_start_end(t_room *room)
 {
+	t_room	*head;
 	t_room	*cur;
 
+	head = room;
 	cur = room;
 	while (cur)
 	{
@@ -99,4 +98,5 @@ void	find_start_end(t_room *room)
 		}
 		cur = cur->next;
 	}
+	return (head);
 }

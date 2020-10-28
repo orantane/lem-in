@@ -3,20 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   links.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: orantane <orantane@student.hive.fi>	    +#+  +:+       +#+        */
+/*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/08 17:46:02 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/21 19:34:33 by orantane         ###   ########.fr       */
+/*   Created: 2020/10/28 19:13:51 by ksalmi            #+#    #+#             */
+/*   Updated: 2020/10/28 19:45:11 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-/*
-** Joins two linked lists together.
-*/
-
-t_names		*join_lists(t_names *new, t_names *old)
+t_names			*join_lists(t_names *new, t_names *old)
 {
 	t_names	*cur;
 
@@ -45,9 +41,17 @@ t_names		*join_lists(t_names *new, t_names *old)
 ** The function allocates memory for the link array and sets the links[i] to
 ** point to the rooms found in the t_names *links.
 */
-void    links_to_room(t_room *cur, t_room *rooms, t_names *links)
+
+static void		set_status(t_room *cur, int i)
 {
-    t_names	*tmp;
+	cur->links[i] = NULL;
+	cur->avoid[i] = -1;
+	cur->lnkd = 1;
+}
+
+void			links_to_room(t_room *cur, t_room *rooms, t_names *links)
+{
+	t_names	*tmp;
 	int		i;
 
 	if (!(cur->links = (t_room**)malloc(sizeof(t_room*) * (cur->link_num + 1))))
@@ -55,8 +59,8 @@ void    links_to_room(t_room *cur, t_room *rooms, t_names *links)
 	if (!(cur->avoid = (int*)malloc(sizeof(int) * (cur->link_num + 1))))
 		print_error(strerror(errno));
 	i = 0;
-    while (rooms && i < cur->link_num)
-    {
+	while (rooms && i < cur->link_num)
+	{
 		tmp = links;
 		while (tmp)
 		{
@@ -70,9 +74,7 @@ void    links_to_room(t_room *cur, t_room *rooms, t_names *links)
 		}
 		rooms = rooms->next;
 	}
-	cur->links[i] = NULL;
-	cur->avoid[i] = -1;
-	cur->lnkd = 1;
+	set_status(cur, i);
 }
 
 /*
@@ -83,83 +85,30 @@ void    links_to_room(t_room *cur, t_room *rooms, t_names *links)
 ** that have a link from r_name.
 */
 
-t_names     *find_links_to_room(t_room *room, t_list *list, t_room *all)
+t_names			*find_links(t_room *room, t_list *list, t_room *all, t_lem *lem)
 {
-    t_names *links;
-    t_names	*head;
-    t_room	*cur;
-	char	*tmp;
-
-//suojaa needle, jos on tyhja tai \n
-    head = NULL;
-    while (list)
-    {
-        if ((tmp = strstr_links(room->name, (char*)list->content)))
-        {
-            cur = all;
-            while (cur)
-            {
-                if (cur != all && strequ_newline(cur->name, tmp))
-                {
-                    if(!(links = (t_names*)malloc(sizeof(t_names))))
-						print_error(strerror(errno));
-					links->room = cur;
-					links->origin = room;
-					links->next = NULL;
-					name_add(&head, links);
-					break ;
-        		}
-				cur = cur->next;
-            }
-        }
-        list = list->next;
-    }
-    return (head);
-}
-
-/*
-** So far this function only handles the starting room, meaning
-** that it gets a list of rooms connected to it, counts the
-** number of those connections and builds the links.
-** Maybe the *links could be our queue where we read from.
-*/
-
-void	build_link_tree(t_room *start, t_room *rooms, t_list *list, t_lem *lem)
-{
-	t_names *links;
-	t_names	*tmp;
-	t_names	*que;
-	t_names	*read;
-
-	read = NULL;
-	links = find_links_to_room(start, list, rooms);
-	start->link_num = count_links(links);
-	lem->s_bneck = start->link_num;
-	read = links;
-	links_to_room(start, rooms, links);
-	while (read != NULL)
+	lem->head = NULL;
+	while (list)
 	{
-		que = NULL;
-		while (read != NULL)
+		if ((lem->tmp_str = strstr_links(room->name, (char*)list->content)))
 		{
-			if (read->room->lnkd || (read->room != NULL && read->room == start->next))
+			lem->cur = all;
+			while (lem->cur)
 			{
-				tmp = read->next;
-				free(read);
-				read = tmp;
-				continue ;
+				if (lem->cur != all && strequ_n(lem->cur->name, lem->tmp_str))
+				{
+					if (!(lem->link = (t_names*)malloc(sizeof(t_names))))
+						print_error(strerror(errno));
+					lem->link->room = lem->cur;
+					lem->link->origin = room;
+					lem->link->next = NULL;
+					name_add(&lem->head, lem->link);
+					break ;
+				}
+				lem->cur = lem->cur->next;
 			}
-			links = find_links_to_room(read->room, list, rooms);
-			if (links)
-			{
-				read->room->link_num = count_links(links);
-				links_to_room(read->room, rooms, links);
-			}
-			que = join_lists(links, que);
-			tmp = read->next;
-			free(read);
-			read = tmp;
 		}
-		read = que;
+		list = list->next;
 	}
+	return (lem->head);
 }

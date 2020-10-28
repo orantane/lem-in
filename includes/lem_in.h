@@ -45,10 +45,18 @@ typedef struct		s_names
 	struct s_names	*next;
 }					t_names;
 
+typedef struct		s_value
+{
+	int				mod;
+	int				tmp_ants;
+	int				start;
+	int				end;
+}					t_value;
 
 typedef struct		s_lem
 {
 	int				ants;
+	t_list			*links_begin;
 	int				loop;
 	int				s_bneck;
 	int				tmp_i;
@@ -57,9 +65,18 @@ typedef struct		s_lem
 	t_names			*que;
 	t_names			*read;
 	t_names			*tmp;
-	t_list			*links;
+	t_names			*head;
+	t_names			*link;
+	t_names			*links_from_rm;
+	t_room			*cur;
+	int				avoid_i;
 	char			*end;
+	int				max;
+	char			*tmp_str;
 	int				required;
+	int				flag_q;
+	int				flag_p;
+	int				step_count;
 }					t_lem;
 
 void				init_lem_struct(t_lem *lem);
@@ -72,15 +89,14 @@ int     			count_links(t_names *links);
 void				name_add(t_names **alst, t_names *new);
 void				room_add(t_room **alst, t_room *new);
 t_room 				*room_names(t_list *list, t_lem *lem);
-void				find_start_end(t_room *room);
+t_room				*find_start_end(t_room *room);
 char   				*strstr_links(char *needle, char *haystack);
 void				links_to_room(t_room *cur, t_room *rooms, t_names *links);
-t_names     		*find_links_to_room(t_room *room, t_list *list, \
-						t_room *all);
-void				build_link_tree(t_room *start, t_room *rooms, t_list *list,
-						t_lem *lem);
+t_names     		*find_links(t_room *room, t_list *list, \
+						t_room *all, t_lem *lem);
+void				build_link_tree(t_room *start, t_list *list, t_lem *lem);
 t_names				*join_lists(t_names *new, t_names *old);
-int					strequ_newline(char *room, char *link);
+int					strequ_n(char *room, char *link);
 void				init_arr_null(int num, t_names **arr);
 void				free_names_list(t_names *list);
 t_names     		*arr_to_list(t_room *room, int link_num, int avoid);
@@ -98,8 +114,11 @@ t_names				**prepare_output(t_lem *lem, t_names **paths);
 void				print_output(t_lem *lem, t_names **paths);
 t_names     		*set_links_to_avoid(t_names *path);
 int	        		avoid_shortest_path(t_room *short_path, t_room *start);
+t_list				*print_input_data(t_list *list, t_lem *lem);
 void				print_error(char *str);
-
-void    			print_path_array(t_names **arr, int *rounds); //remove
+void    			print_path_array(t_names **arr, int *rounds);
+void				check_flags(t_lem *lem, char *flag_str);
+int     			return_shortest_path_to_use(t_room *start, int avoid_i);
+void    			erase_avoids(int start, int end, t_names **arr);
 
 #endif

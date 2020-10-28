@@ -6,13 +6,24 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 16:42:55 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/23 21:21:23 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/28 19:53:52 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-t_list    *save_info(int fd)
+/*
+** These functions read the input line by line and saves it to a linked list.
+*/
+
+static t_list   *set_tail(t_list *tail, t_list *new)
+{
+    tail->next = new; 
+    tail = new;
+    return (tail);
+}
+
+t_list          *save_info(int fd)
 {
 	t_list	*head;
     t_list  *tail;
@@ -31,10 +42,7 @@ t_list    *save_info(int fd)
             tail = new;
         }
         else
-        {
-            tail->next = new; 
-            tail = new;
-        }
+            tail = set_tail(tail, new);
 		if (line)
 			ft_strdel(&line);
 	}

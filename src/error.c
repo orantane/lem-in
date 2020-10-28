@@ -6,11 +6,15 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 22:00:30 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/28 16:04:55 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/28 19:45:42 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+
+/*
+** Displays the error message sent to the function and exits the program.
+*/
 
 void		print_error(char *str)
 {
@@ -53,6 +57,13 @@ static int	check_end_command(char *str, char *str_next)
 		end++;
 	return (end);
 }
+
+/*
+** Checks the info saved into the linked list for possible errors. These
+** errors include the wrong number of ##start and ##end rooms, a valid
+** amount of ants, and room names that start with an 'L'. There can also
+** be no empty lines in the input data.
+*/
 
 void		check_errors(t_list *list, t_lem *lem)
 {

@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 18:34:38 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/23 20:01:00 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/28 20:42:21 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 /*
 ** Sorts the paths of one pass in ascending order according to their lengths.
 */
-void    pass_sort_paths_len(t_names **arr, int start, int end)
+
+void        pass_sort_paths_len(t_names **arr, int start, int end)
 {
     int     i;
     int     j;
@@ -43,45 +44,64 @@ void    pass_sort_paths_len(t_names **arr, int start, int end)
     }
 }
 
-int		*pass_value(int ants, t_names **arr, int start, int end)
+static int  *calculate_value(t_value *v, int *steps, t_names **arr)
 {
-    int mod;
-    int j;
-	int	tmp_ants;
-	int	*steps;
+    int     i;
 
-    
-	tmp_ants = ants;
-    j = start;
-    mod = 0;
+    i = v->start;
+    while (i + 1 < v->end && v->tmp_ants > 0)
+	{
+		if ((v->tmp_ants - ((arr[i + 1]->len - arr[i]->len) * (i - v->start + 1))) > 0)
+            v->tmp_ants = v->tmp_ants - ((arr[i + 1]->len - arr[i]->len) * (i - v->start + 1));
+		else
+			break ;
+        i++;
+	}
+    if (v->tmp_ants > 0)
+	    v->mod = v->tmp_ants % (i - v->start + 1);
+	steps[2] = (v->tmp_ants / (i - v->start + 1)) + arr[i]->len;
+	if (v->mod > 0)
+    {
+        while (v->mod > 0 && v->mod < (i - v->start + 1) && (i - 1) > 0 && steps[2] <= arr[i]->len)
+            i--;
+        steps[2]++;
+    }
+    steps[1] = i;
+    return (steps);
+}
+
+/*
+** Functions above and below calculate the steps for a given search
+** pass with the amount of ants declared in the input. Then saves the
+** optimal amount of paths as index values to an integer array. The
+** index values refer to the "arr"-array start and end points. Also
+** stores the value of the pass into the 3rd position of the integer
+** array.
+*/
+
+int		    *pass_value(int ants, t_names **arr, int start, int end)
+{
+    t_value v;
+    int     *steps;
+
+	v.tmp_ants = ants;
+    v.start = start;
+    v.mod = 0;
+    v.end = end;
     if (!(steps = (int *)malloc(sizeof(int) * 3)))
 		print_error(strerror(errno));
     steps[2] = 0;
     steps[0] = start;
-	while (j + 1 < end && tmp_ants > 0)
-	{
-		if ((tmp_ants - ((arr[j + 1]->len - arr[j]->len) * (j - start + 1))) > 0)
-            tmp_ants = tmp_ants - ((arr[j + 1]->len - arr[j]->len) * (j - start + 1));
-		else
-			break ;
-        j++;
-	}
-    if (tmp_ants > 0)
-	    mod = tmp_ants % (j - start + 1);
-	steps[2] = (tmp_ants / (j - start + 1)) + arr[j]->len;
-	if (mod > 0)
-    {
-        while (mod < (j - start + 1) && (j - 1) > 0 && steps[2] <= arr[j]->len)
-        {
-            j--;
-        }
-		steps[2]++;
-    }
-    steps[1] = j;
+    steps = calculate_value(&v, steps, arr);
 	return (steps);
 }
 
-int		*path_select(t_lem *lem, int *pass, t_names **arr)
+/*
+** Goes through all the seach passes and saves the data of the best one
+** into an integer array, then returns the array.
+*/
+
+int		    *path_select(t_lem *lem, int *pass, t_names **arr)
 {
 	int		*value;
 	int		i;

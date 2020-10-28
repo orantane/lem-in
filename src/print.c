@@ -12,6 +12,35 @@
 
 #include "lem_in.h"
 
+void    print_path_array(t_names **arr, int *pass)
+{
+    int     i;
+	int		j;
+	int		flow;
+    t_names *tmp;
+
+    i = 0;
+	j = 0;
+	flow = 0;
+    while (arr[i] && j < ROUNDS && (j == 0 || pass[j] != 0))
+    {
+		ft_printf("\nRound:%d, paths found:%d\n", j, pass[j + 1] - pass[j]);
+		while (arr[i] && i < pass[j + 1])
+		{
+			tmp = arr[i];
+			while (tmp)
+			{
+				ft_printf("%s->", tmp->room->name);
+				tmp = tmp->next;
+			}
+			ft_printf("  |  %d is path len.\n", arr[i]->len);
+			i++;
+		}
+		j++;
+    }
+	ft_putchar('\n');
+}
+
 /*
 ** Creates an array of pointers to paths. Each pointer represents an ant.
 ** So there are as many pointers as there are ants. Uses the pass_value
@@ -80,7 +109,8 @@ void	print_output(t_lem *lem, t_names **paths)
 		lem->loop = 0;
 		lem->tmp_i = lem->value[0];
 		lem->tmp_j = lem->value[1];
-		free(lem->value);
+		if (lem->value)
+			free(lem->value);
 		lem->value = pass_value(tmp_ants, paths, lem->tmp_i, lem->tmp_j + 1);
 		tmp_ants = tmp_ants - (lem->value[1] - lem->value[0] + 1);
 		print = j + (lem->value[1] - lem->value[0] + 1);
@@ -89,7 +119,7 @@ void	print_output(t_lem *lem, t_names **paths)
 		j = 0;
 		while (print && j < print)
 		{
-			if (routes[j] != NULL)
+			if (routes[j] != NULL && lem->flag_q == 0)
 				ft_printf("L%d-%s ", (j + 1), routes[j]->room->name);
 			if (routes[j] != NULL)
 			{
@@ -99,8 +129,31 @@ void	print_output(t_lem *lem, t_names **paths)
 			}
 			j++;
 		}
-		ft_putchar('\n');
+		if (lem->flag_q == 0)
+			ft_putchar('\n');
+		else
+			lem->step_count++;
 	}
 	free(lem->value);
 	free(routes);
+}
+
+t_list	*print_input_data(t_list *list, t_lem *lem)
+{
+	t_list	*after_ant_num;
+	char	*str;
+
+	after_ant_num = NULL;
+	while (list)
+	{
+		str = (char*)list->content;
+		if (ft_isdigit(str[0]) && !ft_strchr(str, ' ') && !ft_strchr(str, '-'))
+			after_ant_num = list->next;
+		if (lem->flag_q == 0)
+			ft_putendl(str);
+		list = list->next;
+	}
+	if (lem->flag_q == 0 && lem->flag_p == 0)
+		ft_putchar('\n');
+	return (after_ant_num);
 }

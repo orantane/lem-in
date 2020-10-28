@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 16:58:32 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/28 15:52:32 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/28 19:40:41 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,30 +19,26 @@
 ** solution. Once that is found, it prints it out in the correct format.
 */
 
-int		main()
+int		main(int argc, char **argv)
 {
 	t_list  *list;
-	t_list  *head;
 	t_room *room;
 	t_lem   lem;
 	t_names	**paths;
 
 	init_lem_struct(&lem);
+	while (--argc > 0)
+		check_flags(&lem, argv[argc]);
 	list = save_info(0);
 	if (!list || list == NULL)
 		print_error(strerror(errno));
 	check_errors(list, &lem);
-	head = list;
-	while (list)		// Prints out the whole input.
-	{
-		ft_putendl((char*)list->content);
-		list = list->next;
-	}
-	ft_putchar('\n');
-	room = room_names(head, &lem);	// Creates and initializes the big room structure.
-	build_link_tree(room, room, lem.links, &lem);
+	list = print_input_data(list, &lem);
+	room = room_names(list, &lem);
+	build_link_tree(room, lem.links_begin, &lem);
 	paths = make_path_array(&lem, room);
 	print_output(&lem, paths);
+	if (lem.flag_q == 1)
+		ft_printf("Output is %d steps.\n", lem.step_count);
 	return (0);
-
 }

@@ -1,52 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   path3.c                                            :+:      :+:    :+:   */
+/*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 18:07:40 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/28 16:42:04 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/28 20:41:47 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-
-t_names     *set_links_to_avoid(t_names *path)
-{
-    t_names *cur;
-    t_names *origin;
-    int     i;
-    int     j;
-
-    origin = path;
-    while (origin->next)
-    {
-        i = 0;
-        cur = origin->next;
-		while (i < origin->room->link_num)
-		{
-            if (origin->room->links[i] == cur->room && cur->next)
-            {
-                origin->room->avoid[i] = 1;
-                break ;
-            }
-            i++;
-        }
-        j = 0;
-        while (cur->next && j < cur->room->link_num)
-        {
-            if (cur->room->links[j] == origin->room)
-            {
-                cur->room->avoid[j] = 1;
-                break ;
-            }
-            j++;
-        }
-        origin = origin->next;
-    }
-    return (path);
-}
 
 t_names     *create_path(t_names *search, t_room *start)
 {
@@ -79,7 +43,7 @@ t_names     *create_path(t_names *search, t_room *start)
             if (head->next)
                 head->next->room->origin = NULL;
         }
-        else
+        else if (cur)
             cur->room->origin = NULL;
         free(search);
         search = cur;
@@ -112,6 +76,7 @@ t_names     *find_path(t_room *start)
                 {
                     free_names_list(que);
                     free_names_list(read->next);
+                    free(read);
                     return (create_path(search, start));
                 }
                 tmp = arr_to_list(search->room, search->room->link_num, 1);
@@ -145,57 +110,6 @@ void        init_next_pass(int start, int end, t_names **arr)
     }
 }
 
-int        avoid_shortest_path(t_room *short_path, t_room *start)
-{
-    int i;
-
-    i = 0;
-    while (i < start->link_num)
-    {
-        if (start->links[i] == short_path)
-        {
-            start->avoid[i] = 1;
-            break ;
-        }
-        i++;
-    }
-    return (i);
-}
-
-
-void    erase_avoids(int start, int end, t_names **arr)
-{
-    int     i;
-    int     j;
-    t_names *cur;
-
-    i = start;
-    if (end != -1)
-    {
-        while (i <= end)
-        {
-            cur = arr[i];
-            while (cur && cur->room)
-            {
-                j = 0;
-                while (j < cur->room->link_num)
-                {
-                    cur->room->avoid[j] = 0;
-                    j++;
-                }
-                cur = cur->next;
-            }
-            i++;
-        }
-    }
-}
-
-static int     return_shortest_path_to_use(t_room *start, int avoid_i)
-{
-    start->avoid[avoid_i] = 0;
-    return (-1);
-}
-
 /*
 ** Creates an array, which we use to store all the paths we find. Also creates
 ** an array of int's which stores the index values for every search pass
@@ -205,12 +119,10 @@ static int     return_shortest_path_to_use(t_room *start, int avoid_i)
 t_names     **make_path_array(t_lem *lem, t_room *start)
 {
     t_names **arr;
-	int		max;
 	int		i;
     int     j;
     int     pass[ROUNDS];
     int     round;
-    int     avoid_i;
 
 	i = -1;
     while (++i < ROUNDS)
@@ -218,21 +130,22 @@ t_names     **make_path_array(t_lem *lem, t_room *start)
     pass[0] = 0;
     i = 0;
     round = 1;
-	max = lem->s_bneck * MAX_PATHS;
-    if (!(arr = (t_names **)malloc(sizeof(t_names *) * max + 1)))
+	lem->max = lem->s_bneck * MAX_PATHS;
+    if (!(arr = (t_names **)malloc(sizeof(t_names *) * lem->max + 1)))
         print_error(strerror(errno));
-    init_arr_null(max, arr);
-    avoid_i = -1;
-    while(i < max && round < ROUNDS)
+    init_arr_null(lem->max, arr);
+    while(i < lem->max && round < ROUNDS)
     {
         j = round - 1;
-        while (round < (j + 3) && i < max && round < ROUNDS)
+        while (round < (j + 3) && i < lem->max && round < ROUNDS)
         {
             arr[i] = find_path(start);
-            if (avoid_i != -1)
-                avoid_i = return_shortest_path_to_use(start, avoid_i);
+            //if (lem->avoid_i != -1)
+                //lem->avoid_i = return_shortest_path_to_use(start, lem->avoid_i);
             if (arr[i] == NULL)
             {
+                if (i == 0)
+                    print_error("ERROR! No possible paths");
                 pass[round] = i;
                 init_next_pass(pass[round - 1], pass[round], arr);
                 round++;
@@ -241,12 +154,19 @@ t_names     **make_path_array(t_lem *lem, t_room *start)
             i++;
         }
         lem->value = path_select(lem, pass, arr);
-        if (lem->required + 6 >= lem->value[2])
+        if (lem->value && lem->required + 6 >= lem->value[2])
+        {
+            if (lem->flag_p == 1)
+                print_path_array(arr, pass);
             return (arr);
-        free(lem->value);
+        }
+        if (lem->value)
+            free(lem->value);
         erase_avoids(pass[j], pass[round - 1], arr);
-        avoid_i = avoid_shortest_path(arr[pass[j]]->room, start);
+        lem->avoid_i = avoid_shortest_path(arr[pass[j]]->room, start);
     }
     lem->value = path_select(lem, pass, arr);
+    if (lem->flag_p == 1)
+        print_path_array(arr, pass);
     return (arr);
 }
