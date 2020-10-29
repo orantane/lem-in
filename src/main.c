@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 16:58:32 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/29 17:22:49 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/29 21:21:20 by orantane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@
 ** solution. Once that is found, it prints it out in the correct format.
 */
 
-int		main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	t_list  *list;
-	t_room *room;
-	t_lem   lem;
+	t_list	*list;
+	t_room	*room;
+	t_lem	lem;
 	t_names	**paths;
 
 	init_lem_struct(&lem);

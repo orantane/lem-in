@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 14:54:47 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/28 15:52:32 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/29 21:23:04 by orantane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,11 @@ void	room_add(t_room **alst, t_room *new)
 ** Creates a new t_names-node
 */
 
-t_names		*new_names_node(t_room *room, t_room *origin)
+t_names	*new_names_node(t_room *room, t_room *origin)
 {
 	t_names	*node;
 
-    if (!(node = (t_names *)malloc(sizeof(t_names))))
+	if (!(node = (t_names *)malloc(sizeof(t_names))))
 		print_error(strerror(errno));
 	node->room = room;
 	node->origin = origin;

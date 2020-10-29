@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 18:34:38 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/29 20:11:41 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/29 21:25:47 by orantane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,22 @@
 ** Sorts the paths of one pass in ascending order according to their lengths.
 */
 
-void        pass_sort_paths_len(t_names **arr, int start, int end)
+void	pass_sort_paths_len(t_names **arr, int start, int end)
 {
-    int     i;
-    int     j;
-    t_names *tmp;
-    t_names *tmp2;
+	int		i;
+	int		j;
+	t_names	*tmp;
+	t_names	*tmp2;
 
-    i = start;
-    while (i < end)
-    {
-        j = i + 1;
-        while (j < end)
-        {
-            if (arr[j] && arr[j]->len < arr[i]->len)
-            {
-                tmp = arr[j];
+	i = start;
+	while (i < end)
+	{
+ 		j = i + 1;
+		while (j < end)
+		{
+			if (arr[j] && arr[j]->len < arr[i]->len)
+			{
+				tmp = arr[j];
                 tmp2 = arr[i];
                 arr[i] = tmp;
                 arr[j] = tmp2;

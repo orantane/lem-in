@@ -35,6 +35,8 @@ int		main(int argc, char **argv)
 		//in this case, error invalid file?
 		paths = make_path_array(&lem, room);
 		print_output(&lem, paths);
+		if (lem.flag_p == 1)
+			print_path_array(paths, lem.pass);
 		if (lem.flag_q == 1)
 			ft_printf("Output is %d steps.\n", lem.step_count);
 //	}
