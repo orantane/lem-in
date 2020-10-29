@@ -19,11 +19,11 @@
 ** it doesn't avoid any of them.
 */
 
-t_names     *arr_to_list(t_room *room, int link_num, int avoid)
+t_names		*arr_to_list(t_room *room, int link_num, int avoid)
 {
-    int     i;
-    t_names *head;
-    t_names *new;
+	int		i;
+	t_names *head;
+	t_names *new;
 
 	head = NULL;
 	head = NULL;

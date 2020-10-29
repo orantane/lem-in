@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 18:34:38 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/29 21:25:47 by orantane         ###   ########.fr       */
+/*   Updated: 2020/10/29 21:48:37 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,22 @@ void	pass_sort_paths_len(t_names **arr, int start, int end)
 	i = start;
 	while (i < end)
 	{
- 		j = i + 1;
+		j = i + 1;
 		while (j < end)
 		{
 			if (arr[j] && arr[j]->len < arr[i]->len)
 			{
 				tmp = arr[j];
-                tmp2 = arr[i];
-                arr[i] = tmp;
-                arr[j] = tmp2;
-                i = start;
-                continue ; 
-            }
-            j++;
-        }
-        i++;
-    }
+				tmp2 = arr[i];
+				arr[i] = tmp;
+				arr[j] = tmp2;
+				i = start;
+				continue ; 
+			}
+			j++;
+		}
+		i++;
+	}
 }
 
 static int  *calculate_value(t_value *v, int *steps, t_names **arr)

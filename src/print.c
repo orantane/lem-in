@@ -12,18 +12,18 @@
 
 #include "lem_in.h"
 
-void    print_path_array(t_names **arr, int *pass)
+void	print_path_array(t_names **arr, int *pass)
 {
-    int     i;
+	int		i;
 	int		j;
 	int		flow;
-    t_names *tmp;
+	t_names *tmp;
 
-    i = 0;
+	i = 0;
 	j = -1;
 	flow = 0;
-    while (arr[i] && ++j < ROUNDS && (j == 0 || pass[j] != 0))
-    {
+	while (arr[i] && ++j < ROUNDS && (j == 0 || pass[j] != 0))
+	{
 		ft_printf("\nRound: %d, paths found: %d\n", j, pass[j + 1] - pass[j]);
 		while (arr[i] && i < pass[j + 1])
 		{
@@ -36,7 +36,7 @@ void    print_path_array(t_names **arr, int *pass)
 			ft_printf("  |  Path lenght is %d rooms.\n", arr[i]->len);
 			i++;
 		}
-    }
+	}
 	ft_putchar('\n');
 }
 
@@ -47,37 +47,11 @@ void    print_path_array(t_names **arr, int *pass)
 ** array to be printed.
 */
 
-static t_names	**prepare_ant_array(t_lem *lem)
-{
-	t_names	**routes;
-
-	if (!(routes = (t_names**)malloc(sizeof(t_names *) * (lem->ants + 1))))
-			print_error(strerror(errno));
-	routes[lem->ants] = NULL;
-	return (routes);
-}
-
-static int	*copy_value(int *value)
-{
-	int	*new;
-	int	i;
-
-	if (!(new = (int *)malloc(sizeof(int) * 3)))
-		print_error(strerror(errno));
-	i = 0;
-	while (i < 3)
-	{
-		new[i] = value[i];
-		i++;
-	}
-	return (new);
-}
-
-t_names		**prepare_output(t_lem *lem, t_names **paths)
+t_names	**prepare_output(t_lem *lem, t_names **paths)
 {
 	t_prep	p;
 
-	p.routes = prepare_ant_array(lem);
+	p.routes = mallocate_ant_array(lem);
 	p.tmp_ants = lem->ants;
 	p.tmp_value = copy_value(lem->value);
 	p.i = 0;
