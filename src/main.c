@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 16:58:32 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/29 16:30:05 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/29 17:22:49 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int		main(int argc, char **argv)
 	build_link_tree(room, lem.links_begin, &lem);
 	paths = make_path_array(&lem, room);
 	print_output(&lem, paths);
+	if (lem.flag_p == 1)
+		print_path_array(paths, lem.pass);
 	if (lem.flag_q == 1)
 		ft_printf("Output is %d steps.\n", lem.step_count);
 	return (0);

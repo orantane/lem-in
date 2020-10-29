@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 18:08:26 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/28 20:35:56 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/29 19:44:14 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int		strequ_n(char *room, char *link)
 
 void	init_lem_struct(t_lem *lem)
 {
+	int	i;
+
 	lem->ants = 0;
 	lem->loop = 0;
 	lem->s_bneck = 0;
@@ -60,11 +62,25 @@ void	init_lem_struct(t_lem *lem)
 	lem->cur = NULL;
 	lem->tmp = NULL;
 	lem->head = NULL;
-    lem->avoid_i = -1;
 	lem->required = 0;
 	lem->flag_q = 0;
 	lem->flag_p = 0;
 	lem->step_count = 0;
+	if (!(lem->pass = (int*)malloc(sizeof(int) * ROUNDS + 1)))
+		print_error(strerror(errno));
+	i = -1;
+    while (++i < ROUNDS)
+        lem->pass[i] = -1;
+    lem->pass[0] = 0;
+}
+
+void	init_lem_again(t_lem *lem)
+{
+	lem->r = 1;
+	lem->max = lem->s_bneck * MAX_PATHS;
+    if (!(lem->arr = (t_names **)malloc(sizeof(t_names *) * lem->max + 1)))
+        print_error(strerror(errno));
+    init_arr_null(lem->max, lem->arr);
 }
 
 void	check_flags(t_lem *lem, char *flag_str)
@@ -79,4 +95,11 @@ void	check_flags(t_lem *lem, char *flag_str)
 		if (flag_str[i] == 'p')
 			lem->flag_p = 1;
 	}
+}
+
+t_names		*free_names_node_return_next(t_names *to_free, t_names *tmp)
+{
+	tmp = to_free->next;
+	free(to_free);
+	return (tmp);
 }

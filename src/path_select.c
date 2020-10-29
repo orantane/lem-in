@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 18:34:38 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/28 20:42:21 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/29 20:11:41 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int  *calculate_value(t_value *v, int *steps, t_names **arr)
     int     i;
 
     i = v->start;
-    while (i + 1 < v->end && v->tmp_ants > 0)
+    while (i + 1 < v->end && v->tmp_ants > 0 && arr[i] != NULL)
 	{
 		if ((v->tmp_ants - ((arr[i + 1]->len - arr[i]->len) * (i - v->start + 1))) > 0)
             v->tmp_ants = v->tmp_ants - ((arr[i + 1]->len - arr[i]->len) * (i - v->start + 1));

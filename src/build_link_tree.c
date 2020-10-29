@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 19:43:25 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/28 19:45:06 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/29 19:25:15 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,6 @@ static t_names	*links_from_start_room(t_room *start, t_list *list, t_lem *lem)
 	lem->s_bneck = start->link_num;
 	links_to_room(start, start, links);
 	return (links);
-}
-
-static t_names	*free_names_node_return_next(t_names *to_free, t_names *tmp)
-{
-	tmp = to_free->next;
-	free(to_free);
-	return (tmp);
 }
 
 void			build_link_tree(t_room *start, t_list *list, t_lem *lem)

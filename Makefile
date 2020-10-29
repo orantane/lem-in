@@ -23,8 +23,8 @@ path.c \
 print.c \
 path_select.c \
 error.c \
-avoid.c \
 build_link_tree.c \
+avoid.c \
 
 SRC_DIR = src/
 
