@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 18:07:40 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/28 20:41:47 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/29 16:44:42 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,13 +121,8 @@ t_names     **make_path_array(t_lem *lem, t_room *start)
     t_names **arr;
 	int		i;
     int     j;
-    int     pass[ROUNDS];
     int     round;
 
-	i = -1;
-    while (++i < ROUNDS)
-        pass[i] = -1;
-    pass[0] = 0;
     i = 0;
     round = 1;
 	lem->max = lem->s_bneck * MAX_PATHS;
@@ -146,27 +141,27 @@ t_names     **make_path_array(t_lem *lem, t_room *start)
             {
                 if (i == 0)
                     print_error("ERROR! No possible paths");
-                pass[round] = i;
-                init_next_pass(pass[round - 1], pass[round], arr);
+                lem->pass[round] = i;
+                init_next_pass(lem->pass[round - 1], lem->pass[round], arr);
                 round++;
                 continue ;
             }
             i++;
         }
-        lem->value = path_select(lem, pass, arr);
+        lem->value = path_select(lem, lem->pass, arr);
         if (lem->value && lem->required + 6 >= lem->value[2])
         {
             if (lem->flag_p == 1)
-                print_path_array(arr, pass);
+                print_path_array(arr, lem->pass);
             return (arr);
         }
         if (lem->value)
             free(lem->value);
-        erase_avoids(pass[j], pass[round - 1], arr);
-        lem->avoid_i = avoid_shortest_path(arr[pass[j]]->room, start);
+        erase_avoids(lem->pass[j], lem->pass[round - 1], arr);
+        lem->avoid_i = avoid_shortest_path(arr[lem->pass[j]]->room, start);
     }
-    lem->value = path_select(lem, pass, arr);
+    lem->value = path_select(lem, lem->pass, arr);
     if (lem->flag_p == 1)
-        print_path_array(arr, pass);
+        print_path_array(arr, lem->pass);
     return (arr);
 }

@@ -6,7 +6,7 @@
 /*   By: orantane <orantane@student.hive.fi		    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:33:49 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/21 19:53:52 by orantane         ###   ########.fr       */
+/*   Updated: 2020/10/29 16:35:42 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # include "libft.h"
 # include "get_next_line.h"
 # include "ft_printf.h"
-# define MAX_PATHS 15
-# define ROUNDS 10
+# define MAX_PATHS 5
+# define ROUNDS 6
 # define REQUIRED "#Here is the number of lines required: "
 
 typedef struct		s_room
@@ -77,6 +77,7 @@ typedef struct		s_lem
 	int				flag_q;
 	int				flag_p;
 	int				step_count;
+	int     		pass[ROUNDS];
 }					t_lem;
 
 void				init_lem_struct(t_lem *lem);
