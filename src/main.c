@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 16:58:32 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/29 21:29:02 by orantane         ###   ########.fr       */
+/*   Updated: 2020/10/30 19:47:51 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** Main first reads the input, saves it to a list. Then checks for errors in
 ** the input. If the input is correct, it is printed out. Creates the data
 ** structure for us to perform searches on. Then searches for the optimal
-** solution. Once that is found, it prints it out in the right format.
+** solution. Once that is found, it prints it out in the correct format.
 */
 
 int	main(int argc, char **argv)

@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 18:08:26 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/29 21:48:35 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/30 17:52:41 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	init_lem_struct(t_lem *lem)
 	lem->cur = NULL;
 	lem->tmp = NULL;
 	lem->head = NULL;
+	lem->pt = NULL;
 	lem->required = 0;
 	lem->flag_q = 0;
 	lem->flag_p = 0;
@@ -76,6 +77,8 @@ void	init_lem_struct(t_lem *lem)
 
 void	init_lem_again(t_lem *lem)
 {
+	lem->read = NULL;
+	lem->que = NULL;
 	lem->r = 1;
 	lem->max = lem->s_bneck * MAX_PATHS;
 	if (!(lem->arr = (t_names **)malloc(sizeof(t_names *) * lem->max + 1)))
@@ -83,49 +86,9 @@ void	init_lem_again(t_lem *lem)
 	init_arr_null(lem->max, lem->arr);
 }
 
-void	check_flags(t_lem *lem, char *flag_str)
-{
-	int	i;
-	
-	i = -1;
-	while (flag_str[++i])
-	{
-		if (flag_str[i] == 'q')
-			lem->flag_q = 1;
-		if (flag_str[i] == 'p')
-			lem->flag_p = 1;
-	}
-}
-
 t_names	*free_names_node_return_next(t_names *to_free, t_names *tmp)
 {
 	tmp = to_free->next;
 	free(to_free);
 	return (tmp);
-}
-
-t_names	**mallocate_ant_array(t_lem *lem)
-{
-	t_names	**routes;
-
-	if (!(routes = (t_names**)malloc(sizeof(t_names *) * (lem->ants + 1))))
-			print_error(strerror(errno));
-	routes[lem->ants] = NULL;
-	return (routes);
-}
-
-int		*copy_value(int *value)
-{
-	int	*new;
-	int	i;
-
-	if (!(new = (int *)malloc(sizeof(int) * 3)))
-		print_error(strerror(errno));
-	i = 0;
-	while (i < 3)
-	{
-		new[i] = value[i];
-		i++;
-	}
-	return (new);
 }

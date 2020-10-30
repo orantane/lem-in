@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 16:42:55 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/29 21:48:33 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/30 19:51:35 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 static t_list	*set_tail(t_list *tail, t_list *new)
 {
-	tail->next = new; 
+	tail->next = new;
 	tail = new;
 	return (tail);
 }

@@ -6,18 +6,53 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 19:43:25 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/29 21:48:28 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/30 19:57:10 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
 /*
-** So far this function only handles the starting room, meaning
-** that it gets a list of rooms connected to it, counts the
-** number of those connections and builds the links.
-** Maybe the *links could be our queue where we read from.
+** Function takes the room we want to add links to, the list of all the rooms
+** (*rooms) the t_names list of rooms to be linked, and the number of links.
+** The function allocates memory for the link array and sets the links[i] to
+** point to the rooms found in the t_names *links.
 */
+
+static void		set_status(t_room *cur, int i)
+{
+	cur->links[i] = NULL;
+	cur->avoid[i] = -1;
+	cur->lnkd = 1;
+}
+
+void			links_to_room(t_room *cur, t_room *rooms, t_names *links)
+{
+	t_names	*tmp;
+	int		i;
+
+	if (!(cur->links = (t_room**)malloc(sizeof(t_room*) * (cur->link_num + 1))))
+		print_error(strerror(errno));
+	if (!(cur->avoid = (int*)malloc(sizeof(int) * (cur->link_num + 1))))
+		print_error(strerror(errno));
+	i = 0;
+	while (rooms && i < cur->link_num)
+	{
+		tmp = links;
+		while (tmp)
+		{
+			if (tmp->room == rooms)
+			{
+				cur->links[i] = rooms;
+				cur->avoid[i] = 0;
+				i++;
+			}
+			tmp = tmp->next;
+		}
+		rooms = rooms->next;
+	}
+	set_status(cur, i);
+}
 
 static t_names	*links_from_start_room(t_room *start, t_list *list, t_lem *lem)
 {

@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 14:54:47 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/29 21:48:36 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/10/30 19:50:13 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,17 @@ void	name_add(t_names **alst, t_names *new)
 			*alst = new;
 		}
 	}
+}
+
+/*
+** Creates a new node and adds it to the front of the list.
+*/
+
+t_names	*addn(t_names *head, t_room *room, t_room *orig)
+{
+	t_names *new;
+
+	new = new_names_node(room, orig);
+	name_add(&head, new);
+	return (head);
 }
