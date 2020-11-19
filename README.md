@@ -2,7 +2,7 @@
 Hive Helsinki school project called "lem-in", made in collaboration with [krsalmi](https://github.com/krsalmi).
 
 
-![](resources/example.gif)
+<img src="/resources/example.gif" width="363px" height="359px"/>
 
 # Usage
 > ./generator --[map_option] | ./lem-in -[flags] \
