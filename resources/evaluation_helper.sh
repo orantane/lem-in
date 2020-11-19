@@ -1,4 +1,5 @@
 #!/bin/bash
+trap "exit" INT
 MINARGS=1
 if [ $# -lt $MINARGS ]; then
 	echo "Usage: sh script.sh 'flow-one' | 'flow-ten' | 'flow-thousand' | 'big' | 'big-superposition'"
@@ -12,7 +13,7 @@ i=0
 while [ $i -lt 50 ]
 do
 	./generator --$ARG > argFILE
-	(time -p ./lem-in < argFILE > outFILE) &> "timeFILE"
+	(time -p ../lem-in < argFILE > outFILE) &> "timeFILE"
 	TIME=$(grep real "timeFILE" | awk '{print $2}')
 	OUTNUM=$(wc -l "outFILE" | awk '{print $1}')
 	ARGNUM=$(wc -l "argFILE" | awk '{print $1}')
@@ -20,13 +21,15 @@ do
 	REQ_RESULTS=$(( $REQ_RESULTS + $REQ ))
 	LINES_NUM=$(( $OUTNUM - $ARGNUM - 1 ))
 	OWN_RESULTS=$(( $OWN_RESULTS + $LINES_NUM ))
-	echo "req $REQ"
-	echo "own $LINES_NUM"
-	#echo "Execution time $TIME"
-	if (( $(echo "$TIME > 4.00" |bc -l) )); then
+	printf "Required: $REQ			"
+	printf "Our own: $LINES_NUM			"
+	DIF=$(($LINES_NUM - $REQ))
+	printf "Difference: $DIF		"
+	echo "||	Execution time $TIME"
+	if (( $(echo "$TIME > 3.00" |bc -l) )); then
 		slow=$(( $slow + 1 ))
 	fi
-	if (( $LINES_NUM > $REQ + 13 ))
+	if (( $LINES_NUM < $REQ - 5 ))
 	then
 		cp -rf outFILE outProblem
 		cp -rf argFILE inProblem
@@ -38,7 +41,7 @@ do
 done
 REQ_AVERAGE=$(( $REQ_RESULTS / $i))
 OWN_AVERAGE=$(( $OWN_RESULTS / $i))
-echo "Required average per $i tests: $REQ_AVERAGE"
-echo "Our average per $i tests: $OWN_AVERAGE"
-echo "$slow times over 4.00s"
+AV_DIF=$(( $OWN_AVERAGE - $REQ_AVERAGE ))
+printf "\nOur average difference per $i tests: $AV_DIF \n"
+echo "$slow times over 3.00s"
 exit 0

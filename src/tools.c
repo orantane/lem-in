@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: orantane <orantane@student.hive.fi>	    +#+  +:+       +#+        */
+/*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/06 17:29:37 by orantane          #+#    #+#             */
-/*   Updated: 2020/10/21 19:34:28 by orantane         ###   ########.fr       */
+/*   Created: 2020/10/30 19:40:51 by ksalmi            #+#    #+#             */
+/*   Updated: 2020/11/11 19:10:47 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,43 +19,40 @@
 ** it doesn't avoid any of them.
 */
 
-t_names     *arr_to_list(t_room *room, int link_num, int avoid)
+t_names		*arr_to_list(t_room *room, int link_num, int avoid)
 {
-    int     i;
-    t_names *head;
-    t_names *new;
+	int		i;
+	t_names *head;
+	t_names *new;
 
 	head = NULL;
-	head = NULL;
-	head = NULL;
-    i = 0;
-	while (room->links[i] && i < link_num)
-    {
+	i = 0;
+	if (room->link_num == 0)
+		return (head);
+	while (i < room->link_num && room->links[i])
+	{
 		if (room->links[i]->origin != NULL || room->avoid[i] == avoid || \
-			 room->links[i]->vis == 1)
+			room->links[i]->vis == 1)
 		{
 			i++;
 			continue ;
 		}
-		if (!(new = (t_names *)malloc(sizeof(t_names))))
-			print_error(strerror(errno));
-		new->room = room->links[i];
+		new = new_names_node(room->links[i], NULL);
 		if (new->room->origin == NULL)
 			new->room->origin = room;
-		new->next = NULL;
 		name_add(&head, new);
 		i++;
-    }
+	}
 	if (room->links[0] && !head && avoid == 1)
 		head = arr_to_list(room, link_num, 0);
-    return (head);
+	return (head);
 }
 
 /*
 ** Free a t_names linked list.
 */
 
-void	free_names_list(t_names *list)
+void		free_names_list(t_names *list)
 {
 	t_names	*tmp;
 
@@ -74,7 +71,7 @@ void	free_names_list(t_names *list)
 ** Counts the amount of nodes in a linked list.
 */
 
-int		count_links(t_names *links)
+int			count_links(t_names *links)
 {
 	int i;
 
@@ -92,7 +89,7 @@ int		count_links(t_names *links)
 ** '\0' or 'space' character. Room names always end with a space.
 */
 
-char	*strcpy_space(char *str)
+char		*strcpy_space(char *str)
 {
 	int		i;
 	char	*new;
@@ -119,28 +116,28 @@ char	*strcpy_space(char *str)
 ** and returns the pointer to that name.
 */
 
-char	*strstr_links(char *needle, char *haystack)
+char		*strstr_lnk(char *needle, char *haystack)
 {
 	int		i;
 	int		j;
 
+	check_link_format(haystack);
 	i = 0;
-	while (haystack[i] != '\0' && haystack[i] != '\n')
+	while (haystack[i] != '\0')
 	{
 		j = 0;
 		while (needle[j] && haystack[i + j] && haystack[i + j] == needle[j])
 		{
 			if (!(i == 0 || (i > 0 && haystack[i - 1] == '-')))
 				break ;
-			if (needle[j] == '\0' && (haystack[i + j] == '\n' || \
-				haystack[i + j] == '\0' || haystack[i + j] == '-'))
+			if (needle[j] == '\0' && (haystack[i + j] == '\0' ||
+				haystack[i + j] == '-'))
 				break ;
 			j++;
-			if (needle[j] == '\0' && (haystack[i + j] == '\n' || haystack[i + j] == '\0'))
-				return (haystack);
-			else if ((needle[j] == '\0' || needle[j] == '\n') &&
-					haystack[i + j] == '-')
-				return (&haystack[i + j + 1]);
+			if (needle[j] == '\0' && haystack[i + j] == '\0')
+				return (ft_strsub(haystack, 0, (size_t)(i - 1)));
+			else if (needle[j] == '\0' && haystack[i + j] == '-')
+				return (ft_strdup(&haystack[i + j + 1]));
 		}
 		i++;
 	}

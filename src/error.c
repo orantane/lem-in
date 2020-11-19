@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 22:00:30 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/28 19:45:42 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/11/11 19:17:23 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,18 @@ void		print_error(char *str)
 static int	check_ants(char *str, t_lem *lem)
 {
 	static int	ants;
+	char		*tmp;
 
 	if (!lem->ants && !ants && !ft_strchr(str, ' '))
 	{
 		if (!ft_isdigit(str[0]))
-			print_error("ERROR! Invalid format!");
+			print_error("ERROR! Invalid format.");
 		lem->ants = ft_atoi(str);
-		if (lem->ants == 0)
-			print_error("ERROR! No ants!");
+		tmp = ft_itoa(lem->ants);
+		if (lem->ants < 1 || ft_strcmp(tmp, str) != 0)
+			print_error("ERROR! Invalid amount of ants.");
+		if (tmp)
+			free(tmp);
 		ants = 1;
 	}
 	return (ants);
@@ -41,20 +45,30 @@ static int	check_ants(char *str, t_lem *lem)
 static int	check_start_command(char *str, char *str_next)
 {
 	static int	start;
+	static int	number_of_starts;
 
+	if (!ft_strcmp(str, "##start"))
+		number_of_starts++;
 	if (!ft_strcmp(str, "##start") && ft_memcmp(str_next, "#", 1) &&
 		!ft_strchr(str_next, '-'))
 		start++;
+	if (number_of_starts > 1)
+		print_error("ERROR! Invalid format.");
 	return (start);
 }
 
 static int	check_end_command(char *str, char *str_next)
 {
 	static int	end;
+	static int	number_of_ends;
 
+	if (!ft_strcmp(str, "##end"))
+		number_of_ends++;
 	if (!ft_strcmp(str, "##end") && ft_memcmp(str_next, "#", 1) &&
 		!ft_strchr(str_next, '-'))
 		end++;
+	if (number_of_ends > 1)
+		print_error("ERROR! Invalid format.");
 	return (end);
 }
 
@@ -86,9 +100,9 @@ void		check_errors(t_list *list, t_lem *lem)
 		start = check_start_command(str, (char*)list->next->content);
 		end = check_end_command(str, (char*)list->next->content);
 		if (str[0] == 'L' || str[0] == '\0')
-			print_error("ERROR");
+			print_error("ERROR! Invalid format.");
 		list = list->next;
 	}
 	if (start != 1 || end != 1 || !ants)
-		print_error("ERROR! Invalid format!");
+		print_error("ERROR! Invalid format.");
 }

@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print2.c                                           :+:      :+:    :+:   */
+/*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: orantane <orantane@student.hive.fi>	    +#+  +:+       +#+        */
+/*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/16 15:03:20 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/21 19:34:46 by orantane         ###   ########.fr       */
+/*   Created: 2020/10/30 19:50:35 by ksalmi            #+#    #+#             */
+/*   Updated: 2020/11/11 17:48:39 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void    print_path_array(t_names **arr, int *pass)
+void	print_path_array(t_names **arr, int *pass)
 {
-    int     i;
+	int		i;
 	int		j;
 	int		flow;
-    t_names *tmp;
+	t_names *tmp;
 
-    i = 0;
+	i = 0;
 	j = -1;
 	flow = 0;
-    while (arr[i] && ++j < ROUNDS && (j == 0 || pass[j] != 0))
-    {
-		ft_printf("\nRound: %d, paths found: %d\n", j, pass[j + 1] - pass[j]);
+	while (arr[i] && ++j < ROUNDS && (j == 0 || pass[j] != 0))
+	{
+		ft_printf("\nRound: %d\n", j + 1);
 		while (arr[i] && i < pass[j + 1])
 		{
 			tmp = arr[i];
@@ -36,7 +36,7 @@ void    print_path_array(t_names **arr, int *pass)
 			ft_printf("  |  Path lenght is %d rooms.\n", arr[i]->len);
 			i++;
 		}
-    }
+	}
 	ft_putchar('\n');
 }
 
@@ -47,37 +47,11 @@ void    print_path_array(t_names **arr, int *pass)
 ** array to be printed.
 */
 
-static t_names	**prepare_ant_array(t_lem *lem)
-{
-	t_names	**routes;
-
-	if (!(routes = (t_names**)malloc(sizeof(t_names *) * (lem->ants + 1))))
-			print_error(strerror(errno));
-	routes[lem->ants] = NULL;
-	return (routes);
-}
-
-static int	*copy_value(int *value)
-{
-	int	*new;
-	int	i;
-
-	if (!(new = (int *)malloc(sizeof(int) * 3)))
-		print_error(strerror(errno));
-	i = 0;
-	while (i < 3)
-	{
-		new[i] = value[i];
-		i++;
-	}
-	return (new);
-}
-
-t_names		**prepare_output(t_lem *lem, t_names **paths)
+t_names	**prepare_output(t_lem *lem, t_names **paths)
 {
 	t_prep	p;
 
-	p.routes = prepare_ant_array(lem);
+	p.routes = mallocate_ant_array(lem);
 	p.tmp_ants = lem->ants;
 	p.tmp_value = copy_value(lem->value);
 	p.i = 0;
@@ -155,19 +129,28 @@ void	print_output(t_lem *lem, t_names **paths)
 t_list	*print_input_data(t_list *list, t_lem *lem)
 {
 	t_list	*after_ant_num;
-	char	*str;
+	t_list	*tmp;
 
+	tmp = list;
 	after_ant_num = NULL;
 	while (list)
 	{
-		str = (char*)list->content;
-		if (ft_isdigit(str[0]) && !ft_strchr(str, ' ') && !ft_strchr(str, '-'))
+		lem->tmp_str = (char*)list->content;
+		if (ft_isdigit(lem->tmp_str[0]) && !ft_strchr(lem->tmp_str, ' ')
+			&& !ft_strchr(lem->tmp_str, '-') && after_ant_num == NULL)
 			after_ant_num = list->next;
 		if (lem->flag_q == 0)
-			ft_putendl(str);
+			ft_putendl(lem->tmp_str);
 		list = list->next;
 	}
 	if (lem->flag_q == 0 && lem->flag_p == 0)
 		ft_putchar('\n');
+	while (tmp != after_ant_num)
+	{
+		list = tmp->next;
+		free(tmp->content);
+		free(tmp);
+		tmp = list;
+	}
 	return (after_ant_num);
 }

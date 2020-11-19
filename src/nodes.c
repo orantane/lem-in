@@ -6,7 +6,7 @@
 /*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 14:54:47 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/10/29 21:23:04 by orantane         ###   ########.fr       */
+/*   Updated: 2020/11/06 19:57:51 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ t_room	*new_room_node(char *content, int se)
 		return (NULL);
 	new->name = strcpy_space(content);
 	tmp = ft_strchr(content, ' ');
-	new->x = ft_atoi(tmp + 1);
-	new->y = ft_atoi(ft_strchr((tmp + 1), ' '));
+	new = coordinate_check(content, new);
 	new->se = se;
 	new->origin = NULL;
 	new->lnkd = 0;
@@ -92,4 +91,17 @@ void	name_add(t_names **alst, t_names *new)
 			*alst = new;
 		}
 	}
+}
+
+/*
+** Creates a new node and adds it to the front of the list.
+*/
+
+t_names	*addn(t_names *head, t_room *room, t_room *orig)
+{
+	t_names *new;
+
+	new = new_names_node(room, orig);
+	name_add(&head, new);
+	return (head);
 }
