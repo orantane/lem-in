@@ -4,14 +4,6 @@ Hive Helsinki school project called "lem-in", made in collaboration with [krsalm
 
 <img src="/resources/example.gif" width="363px" height="359px"/>
 
-# Usage
-> ./generator --[map_option] | ./lem-in -[flags] \
--- OR -- \
-> ./lem-in [flags] < [a map from a file]
-
-Map options are: flow-one, flow-ten, flow-thousand, big, big-superposition. \
-Flag options and their descriptions can be found by running ./lem-in -h.
-
 # The task
 Our task was to create a program written in C, that finds the optimal solution to move ants in the most efficient way
 through a maze of rooms that are connected to eachother via links. To achieve this we studied a number
@@ -23,6 +15,14 @@ the program, we could use another hash table for the linking of the rooms.
 We ended up with a program that is fast and accurate. We also included a file that contains resources
 for testing the program (maps, generator, testing script etc). The generator was provided to us in the subject.
 We included a few flags as a bonus to make the output a bit more understandable in bigger maps.
+
+# Usage
+> ./generator --[map_option] | ./lem-in -[flags] \
+-- OR -- \
+> ./lem-in [flags] < [a map from a file]
+
+Map options are: flow-one, flow-ten, flow-thousand, big, big-superposition. \
+Flag options and their descriptions can be found by running ./lem-in -h.
 
 # The subject and rules
 A few lines from the subject that describes the project and its goals:
