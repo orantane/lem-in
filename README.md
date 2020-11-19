@@ -2,9 +2,9 @@
 Hive Helsinki school project called "lem-in".
 
 # Usage
-./generator --[map_option] | ./lem-in -[flags] \
+> ./generator --[map_option] | ./lem-in -[flags] \
 -- OR -- \
-./lem-in [flags] < [a map from a file]
+> ./lem-in [flags] < [a map from a file]
 
 Map options are: flow-one, flow-ten, flow-thousand, big, big-superposition. \
 Flag options and their descriptions can be found by running ./lem-in -h.
@@ -48,18 +48,18 @@ A few lines from the subject that describes the project and its goals:
   that comes right after. For example, ##start signals the ant farm’s entrance
   and ##end its exit.
 
-An example: \
-#number_of_ants \
-5 \
-#the_rooms \
-##start \
-1 2 3 \
-2 3 4 \
-##end \
-3 4 5 \
-#the_links \
-1-2 \
-2-3
+An example:
+>#number_of_ants \
+>5 \
+>#the_rooms \
+>##start \
+>1 2 3 \
+>2 3 4 \
+>##end \
+>3 4 5 \
+>#the_links \
+>1-2 \
+>2-3
 
 The goal of this project is to find the quickest way to get n ants across the farm.
 - Quickest way means the solution with the least number of lines, respecting the
