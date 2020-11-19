@@ -1,5 +1,5 @@
 # lem-in
-Hive Helsinki school project called "lem-in".
+Hive Helsinki school project called "lem-in", made in collaboration with [krsalmi](https://github.com/krsalmi).
 
 # Usage
 > ./generator --[map_option] | ./lem-in -[flags] \
