@@ -1,10 +1,10 @@
 # lem-in
-School project called "lem-in".
+Hive Helsinki school project called "lem-in".
 
 # Usage
 ./generator --[map_option] | ./lem-in -[flags] \
 -- OR -- \
-./lem-in [flags] < [map from resources]
+./lem-in [flags] < [a map from a file]
 
 Map options are: flow-one, flow-ten, flow-thousand, big, big-superposition. \
 Flag options and their descriptions can be found by running ./lem-in -h.
@@ -59,7 +59,7 @@ An example: \
 3 4 5 \
 #the_links \
 1-2 \
-2-3 \
+2-3
 
 The goal of this project is to find the quickest way to get n ants across the farm.
 - Quickest way means the solution with the least number of lines, respecting the
