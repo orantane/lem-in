@@ -3,8 +3,8 @@ School project called "lem-in".
 
 # Usage
 ./generator --[map_option] | ./lem-in -[flags]
--- OR --
-./lem-in [flags] < [map from resources]
+- -- OR --
+- ./lem-in [flags] < [map from resources]
 
 Map options are: flow-one, flow-ten, flow-thousand, big, big-superposition.
 Flag options and their descriptions can be found by running ./lem-in -h.
