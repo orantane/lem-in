@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   avoid.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksalmi <ksalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksalmi <ksalmi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 19:52:59 by ksalmi            #+#    #+#             */
-/*   Updated: 2020/11/06 19:57:47 by ksalmi           ###   ########.fr       */
+/*   Updated: 2020/12/04 15:54:05 by ksalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+
+/*
+** This function sets the links of a path to avoid.
+** It goes through the links between the rooms of the path and sets
+** the corresponding member of the 'avoid' array to 1.
+*/
 
 t_names	*set_links_to_avoid(t_names *path)
 {
@@ -39,6 +45,11 @@ t_names	*set_links_to_avoid(t_names *path)
 	}
 	return (path);
 }
+
+/*
+** Sets the link from the start-room connecting to the first room in
+** the short-path to 'avoid'.
+*/
 
 void	avoid_shortest_path(t_room *short_path, t_room *start)
 {
